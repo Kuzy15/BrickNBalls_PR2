@@ -7,7 +7,7 @@ public class DeathZone : MonoBehaviour {
 
    
     public bool _firstBall;
-    private Vector2 _posStacker;
+    private Vector3 _posStacker;
 
 
     // Use this for initialization
@@ -23,8 +23,8 @@ public class DeathZone : MonoBehaviour {
             if(_firstBall) //En caso de ser la primera bola
             {
                 _firstBall = false;
-
-                LevelManager.levelManagerInstance.SetPosStacker(collision.gameObject.transform.position);
+                _posStacker = collision.gameObject.transform.position;
+                LevelManager.levelManagerInstance.SetPosStacker(_posStacker);
 
                 Destroy(collision.gameObject);
 
@@ -35,11 +35,8 @@ public class DeathZone : MonoBehaviour {
             }
             else //En caso de no ser la primera bola
             {
-                //collision.gameObject.GetComponent<Ball>().GoTo(_posStacker, 0);
-                Destroy(collision.gameObject);
+                collision.gameObject.GetComponent<Ball>().GoTo(_posStacker);
                 LevelManager.levelManagerInstance.stacker.GetComponent<BallStacker>().AddBall(); //Añades una bola al stacker
-
-               
             }
         }
     }

@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject spawner;
     public GameObject stacker;
     public GameObject deathZone;
+    public GameObject gameField;
 
 
     public int _nballs;
@@ -18,7 +19,7 @@ public class LevelManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         levelManagerInstance = this; 
-        _nballs = 10;
+        _nballs = 12;
         _spawn = true; 
     }
 	
@@ -30,5 +31,10 @@ public class LevelManager : MonoBehaviour {
     public void SetPosStacker(Vector3 pos)
     {
         stacker.transform.position = pos;
+    }
+
+    public void MoveBlocks()
+    {
+        gameField.GetComponent<GameField>().MoveBlocks();
     }
 }

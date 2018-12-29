@@ -18,7 +18,7 @@ public class InputManager : MonoBehaviour {
                 posClicked = ray.origin;
 
                 LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().SetPosDest(posClicked);
-                LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().enabled = true; // Ball spawner can launch balls
+                LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().SpawnBalls(); // Ball spawner can launch balls
                 LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().GetComponentInChildren<MeshRenderer>().enabled = true;
 
             }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class MapReader : MonoBehaviour {
 
 
-    public TextAsset map;
+    TextAsset map;
 
     string _header1;
     string _header2;
@@ -18,6 +18,10 @@ public class MapReader : MonoBehaviour {
     int[] _hitsBlock;
     int _hitsIdx;
 
+    public MapReader(TextAsset _map)
+    {
+        map = _map;
+    }
 
     public void Reader(ref int[] typeBlock, ref int[] hitBlock)
     {

@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block : MonoBehaviour {
+public class SolidBrick : Bricks {
 
-    public int _nHits;
-    
-	
-	void Start () {
+
+    void Start()
+    {
         GetComponentInChildren<TextMesh>().text = _nHits.ToString();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject)
+        if (collision.gameObject != null)
         {
             _nHits--;
         }
@@ -23,9 +22,5 @@ public class Block : MonoBehaviour {
             Destroy(gameObject);
         }
     }
-
-    public void SetHits(int n)
-    {
-        _nHits = n;
-    }
 }
+

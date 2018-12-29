@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour {
 
 
-    private Vector2 _dir;
+    private Vector3 _dir;
     // Use this for initialization
     public void Start() {
 
@@ -14,11 +14,6 @@ public class Ball : MonoBehaviour {
 
     public void StartMoving(Vector3 pos)
     {
-        StartCoroutine(StartMovingCoroutine(pos));
-    }
-
-    private IEnumerator StartMovingCoroutine(Vector3 pos) //Se encarga de dar velocidad a las bolas
-    {
 
         float mod = Mathf.Sqrt(Mathf.Pow(pos.x - transform.position.x, 2) + Mathf.Pow(pos.y - transform.position.y, 2));
         _dir.x = (pos.x - transform.position.x) / mod;
@@ -26,8 +21,8 @@ public class Ball : MonoBehaviour {
         GetComponent<Rigidbody2D>().velocity = new Vector2(_dir.x * 10, _dir.y * 10);
 
 
-        yield return null;
     }
+
 
 
     /*void Stop() //Para la bola
@@ -36,22 +31,29 @@ public class Ball : MonoBehaviour {
     }*/
 
 
-    public void GoTo(Vector3 pos, float time, System.Action<Ball> callback = null) { 
-
-        StartCoroutine(GoToCoroutine(pos, time, callback));
+    public void GoTo(Vector3 pos, System.Action<Ball> callback = null) {
+        float mod = Mathf.Sqrt(Mathf.Pow(pos.x - transform.position.x, 2) + Mathf.Pow(pos.y - transform.position.y, 2));
+        _dir.x = (pos.x - transform.position.x) / mod;
+        StartCoroutine(GoToCoroutine(pos, callback));
 
     }
 
 
-    private IEnumerator GoToCoroutine(Vector3 pos, float time, System.Action<Ball> callback = null) 
+    private IEnumerator GoToCoroutine(Vector3 pos, System.Action<Ball> callback = null) 
     {
-        /*if(callback != null)
+        while (pos.x <= transform.position.x - 0.3f || pos.x >= transform.position.x + 0.3f)
         {
-            callback(this);
-        }*/
+            yield return new WaitForFixedUpdate();
 
-      
-        yield return null;
+            transform.position = new Vector3(transform.position.x + (_dir.x * 0.3f), pos.y, 0);
+
+            if (callback != null)
+            {
+                callback(this);
+            }
+        }
+
+        Destroy(gameObject);
     }
 
 
