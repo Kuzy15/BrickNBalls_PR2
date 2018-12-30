@@ -53,6 +53,7 @@ public class BallStacker : MonoBehaviour {
             LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().MoveTo(transform.position); //Le das al spawn su primera posicion
             LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().Show(true); //Muestras el spawner
             LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().SetNBalls(_ballStacked); //Le das al spawner el numero de boals stackeadas
+            LevelManager.levelManagerInstance.ResetSameRoundPoints();
             Clean(); //Reinicias el numero de bolas stackeadas
             Show(false); //Dejas de mostrar el stacker
             LevelManager.levelManagerInstance.deathZone.GetComponent<DeathZone>()._firstBall = true;

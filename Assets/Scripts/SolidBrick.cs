@@ -19,6 +19,8 @@ public class SolidBrick : Bricks {
         GetComponentInChildren<TextMesh>().text = _nHits.ToString();
         if (_nHits <= 0)
         {
+            LevelManager.levelManagerInstance.AddSameRoundPoints();
+            LevelManager.levelManagerInstance.AddPoints();
             Destroy(gameObject);
         }
     }
