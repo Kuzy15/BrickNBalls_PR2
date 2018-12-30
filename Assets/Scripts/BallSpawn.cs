@@ -8,13 +8,11 @@ public class BallSpawn : MonoBehaviour {
 
     private int _nBalls;
     private Vector3 _posDest;
-    private float _InstantiationTimer = 0.0f;
 
 
     // Use this for initialization
     void Start () {
-        _nBalls = LevelManager.levelManagerInstance._nballs;
-
+        _nBalls = LevelManager.levelManagerInstance.GetNBalls();
     }
 
     public void SpawnBalls()

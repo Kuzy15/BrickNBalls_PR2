@@ -11,8 +11,8 @@ public class LevelManager : MonoBehaviour {
     public GameObject gameField;
 
 
-    public int _nballs;
-    public bool _spawn;
+    private int _nballs;
+    private bool _spawn;
 
     public static LevelManager levelManagerInstance;
 
@@ -27,6 +27,28 @@ public class LevelManager : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void SetNBalls(int n)
+    {
+        _nballs = n;
+    }
+
+    public int GetNBalls()
+    {
+        return _nballs;
+    }
+
+
+    public void SetSpawn(bool s)
+    {
+        _spawn = s;
+    }
+
+    public bool GetSpawn()
+    {
+        return _spawn;
+    }
+
 
     public void SetPosStacker(Vector3 pos)
     {

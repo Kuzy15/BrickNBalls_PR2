@@ -6,30 +6,15 @@ public class Ball : MonoBehaviour {
 
 
     private Vector3 _dir;
-    // Use this for initialization
-    public void Start() {
-
-    }
-
 
     public void StartMoving(Vector3 pos)
     {
-
         float mod = Mathf.Sqrt(Mathf.Pow(pos.x - transform.position.x, 2) + Mathf.Pow(pos.y - transform.position.y, 2));
         _dir.x = (pos.x - transform.position.x) / mod;
         _dir.y = (pos.y - transform.position.y) / mod;
         GetComponent<Rigidbody2D>().velocity = new Vector2(_dir.x * 10, _dir.y * 10);
 
-
     }
-
-
-
-    /*void Stop() //Para la bola
-    {
-        GetComponent<Rigidbody2D>().velocity.Set(0, 0);
-    }*/
-
 
     public void GoTo(Vector3 pos, System.Action<Ball> callback = null) {
         float mod = Mathf.Sqrt(Mathf.Pow(pos.x - transform.position.x, 2) + Mathf.Pow(pos.y - transform.position.y, 2));

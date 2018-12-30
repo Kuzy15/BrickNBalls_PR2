@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour {
 
-    public Vector2 posClicked;
+    private Vector2 posClicked;
     private Ray ray;
-    // Use this for initialization
-  
     
     void FixedUpdate () {
-        if (LevelManager.levelManagerInstance._spawn) {
+        if (LevelManager.levelManagerInstance.GetSpawn()) {
             if (Input.GetMouseButtonDown(0))
             {
-                LevelManager.levelManagerInstance._spawn = false;
+                LevelManager.levelManagerInstance.SetSpawn(false);
                 ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 posClicked = ray.origin;
 

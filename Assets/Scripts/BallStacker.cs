@@ -48,7 +48,7 @@ public class BallStacker : MonoBehaviour {
         _ballStacked++;
         GetComponentInChildren<TextMesh>().text = "x" + (_ballStacked).ToString();
 
-        if (_ballStacked == LevelManager.levelManagerInstance._nballs) //Conmpruebas si ya han colisionado todas
+        if (_ballStacked == LevelManager.levelManagerInstance.GetNBalls()) //Conmpruebas si ya han colisionado todas
         {
             LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().MoveTo(transform.position); //Le das al spawn su primera posicion
             LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().Show(true); //Muestras el spawner
@@ -56,7 +56,7 @@ public class BallStacker : MonoBehaviour {
             Clean(); //Reinicias el numero de bolas stackeadas
             Show(false); //Dejas de mostrar el stacker
             LevelManager.levelManagerInstance.deathZone.GetComponent<DeathZone>()._firstBall = true;
-            LevelManager.levelManagerInstance._spawn = true;
+            LevelManager.levelManagerInstance.SetSpawn(true);
             LevelManager.levelManagerInstance.MoveBlocks();
         }
     }
