@@ -30,7 +30,7 @@ public class GameField : MonoBehaviour
                 ///y se  lo asignas
                 if (_listBlock[x] != 0)
                 {
-                    Vector3 pos = new Vector3(transform.position.x + j, transform.position.y - i - 1, 0);
+                    Vector3 pos = new Vector3(transform.position.x + j, transform.position.y - i - 1.5f, 0);
                     GameObject aux = Instantiate(block[_listBlock[x] - 1], transform.position, transform.rotation, transform);
                     aux.transform.position = pos;
                     if (_listBlock[x] <= 6)
@@ -87,7 +87,7 @@ public class GameField : MonoBehaviour
             {
                 if (_extrafield[x] != 0)
                 {
-                    Vector3 pos = new Vector3(transform.position.x + i, transform.position.y - 1, 0);
+                    Vector3 pos = new Vector3(transform.position.x + i, transform.position.y - 1.5f, 0);
                     GameObject aux = Instantiate(block[_extrafield[x] - 1], transform.position, transform.rotation, transform);
                     aux.transform.position = pos;
                     if (_extrafield[x] <= 6)
