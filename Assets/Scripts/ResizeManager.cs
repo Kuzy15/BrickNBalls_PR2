@@ -37,6 +37,13 @@ public class ResizeManager : MonoBehaviour {
 
         float cameraWidthUnits = mainCamera.orthographicSize * 2 * mainCamera.aspect;
 
+        /*if (cameraWidthUnits < 12.0f)
+        {
+            float newCameraHeightSize = 12.0f / mainCamera.aspect;
+            mainCamera.orthographicSize = (newCameraHeightSize / 2);
+
+        }
+        */
         Destroy(gameObject);
     }
 }

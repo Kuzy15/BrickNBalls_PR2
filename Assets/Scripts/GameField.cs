@@ -73,6 +73,7 @@ public class GameField : MonoBehaviour
             {
                 if (_field[i, j] != null)
                 {
+
                     Vector3 newPos = new Vector3(_field[i, j].gameObject.transform.position.x, (_field[i, j].gameObject.transform.position.y - 1), _field[i, j].gameObject.transform.position.z);
                     _field[i, j].gameObject.transform.position = newPos;
                     GameObject aux = _field[i, j];

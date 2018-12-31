@@ -10,25 +10,6 @@ public class BallStacker : MonoBehaviour {
         _ballStacked = 0;
 	}
 
-
-   /* void FixedUpdate()
-    {
-        GetComponentInChildren<TextMesh>().text = "x" + (_ballStacked).ToString();
-
-        if (_ballStacked == LevelManager.levelManagerInstance._nballs) //Conmpruebas si ya han colisionado todas
-        {
-            LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().MoveTo(transform.position); //Le das al spawn su primera posicion
-            LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().Show(true); //Muestras el spawner
-            LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().SetNBalls(_ballStacked); //Le das al spawner el numero de boals stackeadas
-            Clean(); //Reinicias el numero de bolas stackeadas
-            Show(false); //Dejas de mostrar el stacker
-            LevelManager.levelManagerInstance.deathZone.GetComponent<DeathZone>()._firstBall = true;
-            LevelManager.levelManagerInstance._spawn = true;
-
-        }
-    }
-    */
-
     public void SetPos(Vector2 pos) //Da la posicion al stacker
     {
         transform.position = new Vector3(pos.x, pos.y, 0);
@@ -59,6 +40,7 @@ public class BallStacker : MonoBehaviour {
             LevelManager.levelManagerInstance.deathZone.GetComponent<DeathZone>()._firstBall = true;
             LevelManager.levelManagerInstance.SetSpawn(true);
             LevelManager.levelManagerInstance.MoveBlocks();
+            LevelManager.levelManagerInstance.gameField.GetComponentInChildren<RayHorizontalBrick>().DestroyBrick();
         }
     }
 
