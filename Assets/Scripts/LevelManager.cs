@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour {
 
@@ -11,7 +13,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject deathZone;
     public GameObject gameField;
 
-   public GameObject resizeManager;
+    public GameObject resizeManager;
 
 
     private int _nballs;
@@ -27,15 +29,18 @@ public class LevelManager : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
-        levelManagerInstance = this; 
+    void Start()
+    {
+        levelManagerInstance = this;
+
         _nballs = 12;
         _spawn = true;
         _points = 0;
         _sameRoundPoints = 0;
+
     }
 
-    private void Update()
+private void Update()
     {
         Debug.Log(_points);
     }
@@ -84,4 +89,11 @@ public class LevelManager : MonoBehaviour {
     {
         _sameRoundPoints = 0;
     }
+
+    public void SetMapLevel(TextAsset mapLevel)
+    {
+        gameField.GetComponent<GameField>().SetMapsLevel(mapLevel);
+    }
+
+
 }

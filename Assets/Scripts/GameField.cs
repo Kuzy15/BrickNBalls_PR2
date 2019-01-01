@@ -5,19 +5,19 @@ using UnityEngine;
 public class GameField : MonoBehaviour
 {
 
-    public TextAsset map; //To read the map
     public GameObject [] block = new GameObject [6]; //Dif types of blocks
 
     private GameObject [,] _field = new GameObject [14 , 11];
     private List<int> _extrafield = new List<int>();
     private List<int> _listBlock = new List<int>(); 
+    private TextAsset _map; //To read the map
 
 
     // Use this for initialization
     void Start()
     {
 
-        MapReader mapReader = new MapReader(map);
+        MapReader mapReader = new MapReader(_map);
         mapReader.Reader(ref _listBlock);
 
         int x = (_listBlock.Count - 1) / 2;
@@ -112,5 +112,10 @@ public class GameField : MonoBehaviour
             _extrafield.RemoveRange(_extrafield.Count - 12, 11);
             _extrafield.RemoveRange(x, 11);
         }
+    }
+
+    public void SetMapsLevel(TextAsset mapLevel)
+    {
+        _map = mapLevel;
     }
 }
