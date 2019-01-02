@@ -10,6 +10,7 @@ public class SolidBrick : Bricks {
         GetComponentInChildren<TextMesh>().text = _nHits.ToString();
     }
 
+  
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject != null)
@@ -21,6 +22,7 @@ public class SolidBrick : Bricks {
         {
             LevelManager.levelManagerInstance.AddSameRoundPoints();
             LevelManager.levelManagerInstance.AddPoints();
+            LevelManager.levelManagerInstance.gameField.GetComponent<GameField>().RemoveBlock();
             Destroy(gameObject);
         }
     }

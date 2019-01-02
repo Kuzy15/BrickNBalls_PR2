@@ -31,6 +31,7 @@ public class LevelManager : MonoBehaviour {
     private int _points;
     private int _sameRoundPoints;
     private bool _paused;
+    private bool _endRound;
     private GameObject[] _pausedObjects;
 
     public static LevelManager levelManagerInstance;
@@ -41,18 +42,28 @@ public class LevelManager : MonoBehaviour {
         resizeManager.GetComponent<ResizeManager>().Resize();
         levelManagerInstance = this;
 
-        _nballs = 25;
+        _nballs = 15;
         _spawn = true;
         _points = 0;
         _sameRoundPoints = 0;
 
         scoreText.GetComponent<Text>().text = "Points: " + _points.ToString();
 
+        pause.gameObject.SetActive(true);
+        home.gameObject.SetActive(false);
+        restart.gameObject.SetActive(false);
+        play.gameObject.SetActive(false);
+        homeEnd.gameObject.SetActive(false);
+        restartEnd.gameObject.SetActive(false);
+        nextEnd.gameObject.SetActive(false);
+
         _paused = false;
+        _endRound = false;
+
 
     }
 
-private void Update()
+    private void Update()
     {
     }
 
@@ -187,5 +198,19 @@ private void Update()
     public bool GetPaused()
     {
         return _paused;
+    }
+
+    public bool GetEndRound()
+    {
+        return _endRound;
+    }
+
+    public void EndButtonsActive()
+    {
+        _spawn = false;
+        _endRound = true;
+        homeEnd.gameObject.SetActive(true);
+        restartEnd.gameObject.SetActive(true);
+        nextEnd.gameObject.SetActive(true);
     }
 }

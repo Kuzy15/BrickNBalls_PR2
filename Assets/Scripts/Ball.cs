@@ -13,7 +13,7 @@ public class Ball : MonoBehaviour {
         float mod = Mathf.Sqrt(Mathf.Pow(pos.x - transform.position.x, 2) + Mathf.Pow(pos.y - transform.position.y, 2));
         _dir.x = (pos.x - transform.position.x) / mod;
         _dir.y = (pos.y - transform.position.y) / mod;
-        GetComponent<Rigidbody2D>().velocity = new Vector3(_dir.x * 10, _dir.y * 10);
+        GetComponent<Rigidbody2D>().velocity = new Vector3(_dir.x * 15, _dir.y * 15);
 
     }
 

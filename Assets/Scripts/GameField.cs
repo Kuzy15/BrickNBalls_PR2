@@ -13,6 +13,8 @@ public class GameField : MonoBehaviour
     private List<int> _extrafield = new List<int>();
     private List<int> _listBlock = new List<int>(); 
     private TextAsset _map; //To read the map
+    private int _numBlocks;
+    private bool _endBlocks;
 
 
     // Use this for initialization
@@ -21,6 +23,7 @@ public class GameField : MonoBehaviour
         _map = GameManager.gameManagerInstace.GetMapLevel();
         MapReader mapReader = new MapReader(_map);
         mapReader.Reader(ref _listBlock);
+        _numBlocks = 0;
 
         int x = (_listBlock.Count - 1) / 2;
         int indexHits = (_listBlock.Count - 1) / 2 + 1;
@@ -37,6 +40,7 @@ public class GameField : MonoBehaviour
                     aux.transform.position = pos;
                     if (_listBlock[x] <= 6)
                     {
+                        _numBlocks++;
                         if(_listBlock[x] == 2)
                         {
                             aux.GetComponent<SolidBrick>().SetHits(_listBlock[x] * 2);
@@ -96,6 +100,7 @@ public class GameField : MonoBehaviour
                     aux.transform.position = pos;
                     if (_extrafield[x] <= 6)
                     {
+                        _numBlocks++;
                         if (_listBlock[x] == 2)
                         {
                             aux.GetComponent<SolidBrick>().SetHits(_extrafield[x] * 2);
@@ -128,7 +133,7 @@ public class GameField : MonoBehaviour
         int i = 0;
         while (!active && i < 10)
         {
-            if(_field[11,i] != null)
+            if(_field[11,i] != null)//Si no son bloques especiales
             {
                 active = true;
             }
@@ -136,5 +141,14 @@ public class GameField : MonoBehaviour
             i++;
         }
         warning.SetActive(active);
+    }
+
+    public void RemoveBlock()
+    {
+        _numBlocks--;
+        if(_extrafield.Count == 0 && _numBlocks == 0)
+        {
+            LevelManager.levelManagerInstance.EndButtonsActive();
+        }
     }
 }
