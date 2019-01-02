@@ -37,10 +37,9 @@ public class BallStacker : MonoBehaviour {
             LevelManager.levelManagerInstance.ResetSameRoundPoints();
             Clean(); //Reinicias el numero de bolas stackeadas
             Show(false); //Dejas de mostrar el stacker
-            LevelManager.levelManagerInstance.deathZone.GetComponent<DeathZone>()._firstBall = true;
+            LevelManager.levelManagerInstance.deathZone.GetComponent<DeathZone>().SetFisrtBall(true);
             LevelManager.levelManagerInstance.SetSpawn(true);
             LevelManager.levelManagerInstance.MoveBlocks();
-            LevelManager.levelManagerInstance.gameField.GetComponentInChildren<RayHorizontalBrick>().DestroyBrick();
         }
     }
 

@@ -11,14 +11,17 @@ public class InputManager : MonoBehaviour {
         if (LevelManager.levelManagerInstance.GetSpawn()) {
             if (Input.GetMouseButtonDown(0))
             {
-                LevelManager.levelManagerInstance.SetSpawn(false);
-                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                posClicked = ray.origin;
+                if (Input.mousePosition.y < 380 && Input.mousePosition.y > 60)
+                {
+                    LevelManager.levelManagerInstance.SetSpawn(false);
+                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    posClicked = ray.origin;
 
-                LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().SetPosDest(posClicked);
-                LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().SpawnBalls(); // Ball spawner can launch balls
-                LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().GetComponentInChildren<MeshRenderer>().enabled = true;
+                    LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().SetPosDest(posClicked);
+                    LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().SpawnBalls(); // Ball spawner can launch balls
+                    LevelManager.levelManagerInstance.spawner.GetComponent<BallSpawn>().GetComponentInChildren<MeshRenderer>().enabled = true;
 
+                }
             }
         }
 	}

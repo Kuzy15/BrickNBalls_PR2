@@ -6,13 +6,14 @@ public class Ball : MonoBehaviour {
 
 
     private Vector3 _dir;
+    private Vector3 _vel;
 
     public void StartMoving(Vector3 pos)
     {
         float mod = Mathf.Sqrt(Mathf.Pow(pos.x - transform.position.x, 2) + Mathf.Pow(pos.y - transform.position.y, 2));
         _dir.x = (pos.x - transform.position.x) / mod;
         _dir.y = (pos.y - transform.position.y) / mod;
-        GetComponent<Rigidbody2D>().velocity = new Vector2(_dir.x * 10, _dir.y * 10);
+        GetComponent<Rigidbody2D>().velocity = new Vector3(_dir.x * 10, _dir.y * 10);
 
     }
 
@@ -41,5 +42,15 @@ public class Ball : MonoBehaviour {
         Destroy(gameObject);
     }
 
+    public void Pause()
+    {
+        _vel = GetComponent<Rigidbody2D>().velocity;
+        GetComponent<Rigidbody2D>().velocity = new Vector3();
+    }
+
+    public void Continue()
+    {
+        GetComponent<Rigidbody2D>().velocity = new Vector3(_vel.x,_vel.y);
+    }
 
 }

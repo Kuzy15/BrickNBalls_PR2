@@ -4,36 +4,38 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+struct Level
+{
+
+}
 
 
 
 public class GameManager : MonoBehaviour
 {
-    public Button[] buttomLevels = new Button[10];
-    public TextAsset[] maps = new TextAsset[10];
 
-    private GameManager gameManagerInstace;
+    public static  GameManager gameManagerInstace;
+
+    private TextAsset _currentMapLevel;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         gameManagerInstace = this;
-        for(int i = 0; i < maps.Length; i++)
-        {
-            buttomLevels[i].onClick.AddListener(delegate { LoadLevel(maps[i]); });
-        }
+        DontDestroyOnLoad(gameObject);
     }
 
 
-    void LoadLevel(TextAsset map)
+    public void SetMapLevel(TextAsset map)
     {
-        //LevelManager.levelManagerInstance.SetMapLevel(map);
-        SceneManager.LoadScene(1);
+        _currentMapLevel = map;
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public TextAsset GetMapLevel()
     {
-        
+        return _currentMapLevel; 
     }
+
+
 }

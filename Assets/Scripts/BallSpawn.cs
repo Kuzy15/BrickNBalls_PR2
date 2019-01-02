@@ -25,18 +25,21 @@ public class BallSpawn : MonoBehaviour {
         int wait = 0; 
         while(_nBalls > 0)
         {
-            yield return new WaitForFixedUpdate();
-            wait++;
-            if (wait > 3)
+                yield return new WaitForFixedUpdate();
+            if (!LevelManager.levelManagerInstance.GetPaused())
             {
-                Instantiate(ballPrefab, transform.position, transform.rotation).GetComponent<Ball>().StartMoving(_posDest); //Creas una bola y le das la velocidad
-                _nBalls--;
-                GetComponentInChildren<TextMesh>().text = "x" + (_nBalls).ToString();
-                wait = 0;
-                if (_nBalls <= 0)
+                wait++;
+                if (wait > 3)
                 {
-                    Show(false);
-                    gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+                    Instantiate(ballPrefab, transform.position, transform.rotation).GetComponent<Ball>().StartMoving(_posDest); //Creas una bola y le das la velocidad
+                    _nBalls--;
+                    GetComponentInChildren<TextMesh>().text = "x" + (_nBalls).ToString();
+                    wait = 0;
+                    if (_nBalls <= 0)
+                    {
+                        Show(false);
+                        gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+                    }
                 }
             }
         }

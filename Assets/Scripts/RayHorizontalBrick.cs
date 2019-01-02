@@ -20,7 +20,7 @@ public class RayHorizontalBrick : Bricks {
 
     public void DestroyBrick()
     {
-        if(_touch)
+        if(_touch && LevelManager.levelManagerInstance.GetSpawn())
             Destroy(gameObject);
     }
 }

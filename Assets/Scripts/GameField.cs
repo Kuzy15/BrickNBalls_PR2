@@ -6,6 +6,8 @@ public class GameField : MonoBehaviour
 {
 
     public GameObject [] block = new GameObject [6]; //Dif types of blocks
+    public GameObject warning;
+
 
     private GameObject [,] _field = new GameObject [14 , 11];
     private List<int> _extrafield = new List<int>();
@@ -16,7 +18,7 @@ public class GameField : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        _map = GameManager.gameManagerInstace.GetMapLevel();
         MapReader mapReader = new MapReader(_map);
         mapReader.Reader(ref _listBlock);
 
@@ -82,6 +84,7 @@ public class GameField : MonoBehaviour
                 }
             }
         }
+        ActiveWarnings();
         if (_extrafield.Count > 0)
         {
             for (int i = 0; i < 11; i++, x--)
@@ -117,5 +120,21 @@ public class GameField : MonoBehaviour
     public void SetMapsLevel(TextAsset mapLevel)
     {
         _map = mapLevel;
+    }
+
+    void ActiveWarnings()
+    {
+        bool active = false;
+        int i = 0;
+        while (!active && i < 10)
+        {
+            if(_field[11,i] != null)
+            {
+                active = true;
+            }
+
+            i++;
+        }
+        warning.SetActive(active);
     }
 }

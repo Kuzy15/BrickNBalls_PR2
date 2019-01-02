@@ -6,7 +6,7 @@ using UnityEngine;
 public class DeathZone : MonoBehaviour {
 
    
-    public bool _firstBall;
+    private bool _firstBall;
     private Vector3 _posStacker;
 
 
@@ -14,6 +14,16 @@ public class DeathZone : MonoBehaviour {
     void Start () {
         _firstBall = true;
 	}
+
+    public void SetFisrtBall(bool b)
+    {
+        _firstBall = b;
+    }
+
+    public bool GetFirstBall()
+    {
+        return _firstBall;
+    }
 	
 	
     private void OnCollisionEnter2D(Collision2D collision) //Cuando colisionas con la DeathZone
