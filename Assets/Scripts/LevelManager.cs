@@ -21,7 +21,10 @@ public class LevelManager : MonoBehaviour {
     public Button home;
     public Button restart;
     public Button play;
-    
+    public Button homeEnd;
+    public Button restartEnd;
+    public Button nextEnd;
+
 
     private int _nballs;
     private bool _spawn;
@@ -137,6 +140,47 @@ private void Update()
 
     public void OnClickHomeMenu()
     {
+        SceneManager.LoadScene(0);
+    }
+
+    public void OnClickNextEndeMenu()
+    {
+        string name = GameManager.gameManagerInstace.GetMapLevel().name;
+        int level = name[name.Length - 1] - 48;
+        GameManager.gameManagerInstace.levels[level]._lock = false;
+        ///En funcion de los ptnos conseguidos
+        GameManager.gameManagerInstace.levels[level - 1]._stars[0] = true;
+        GameManager.gameManagerInstace.levels[level - 1]._stars[1] = true;
+        GameManager.gameManagerInstace.levels[level - 1]._stars[2] = true;
+        ///
+        TextAsset nextLevel = Resources.Load("Maps/mapdata" + (level + 1).ToString()) as TextAsset;
+        GameManager.gameManagerInstace.SetMapLevel(nextLevel);
+        SceneManager.LoadScene(1);
+    }
+
+    public void OnClickRestartEndMenu()
+    {
+        string name = GameManager.gameManagerInstace.GetMapLevel().name;
+        int level = name[name.Length - 1] - 48;
+        GameManager.gameManagerInstace.levels[level]._lock = false;
+        ///En funcion de los ptnos conseguidos
+        GameManager.gameManagerInstace.levels[level - 1]._stars[0] = true;
+        GameManager.gameManagerInstace.levels[level - 1]._stars[1] = true;
+        GameManager.gameManagerInstace.levels[level - 1]._stars[2] = true;
+        ///
+        SceneManager.LoadScene(1);
+    }
+
+    public void OnClickHomeEndMenu()
+    {
+        string name = GameManager.gameManagerInstace.GetMapLevel().name;
+        int level = name[name.Length - 1] - 48;
+        GameManager.gameManagerInstace.levels[level]._lock = false;
+        ///En funcion de los ptnos conseguidos
+        GameManager.gameManagerInstace.levels[level - 1]._stars[0] = true;
+        GameManager.gameManagerInstace.levels[level - 1]._stars[1] = true;
+        GameManager.gameManagerInstace.levels[level - 1]._stars[2] = true;
+        ///
         SceneManager.LoadScene(0);
     }
 
