@@ -51,4 +51,9 @@ public class SelectLevelManager : MonoBehaviour {
             SceneManager.LoadScene(1);
         }
     }
+
+    public void OnClickShopScene()
+    {
+        SceneManager.LoadScene(2);
+    }
 }

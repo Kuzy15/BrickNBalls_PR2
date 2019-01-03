@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     private TextAsset _currentMapLevel;
     private int _ruby;
+    private int _nRayPowerUp;
 
     // Start is called before the first frame update
     private void Awake()
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
             }
 
             _ruby = 100;
+            _nRayPowerUp = 2;
         }
     }
 
@@ -63,5 +65,30 @@ public class GameManager : MonoBehaviour
     public int GetRuby()
     {
         return _ruby;
+    }
+
+    public void AddRuby(int r)
+    {
+        _ruby += r;
+    }
+
+    public void RemoveRuby(int r)
+    {
+        _ruby -= r;
+    }
+
+    public int GetNRayPowerUp()
+    {
+        return _nRayPowerUp;
+    }
+
+    public void AddNRayPowerUp(int rpu)
+    {
+        _nRayPowerUp += rpu;
+    }
+
+    public void RemoveNRayPowerUp(int rpu)
+    {
+        _nRayPowerUp -= rpu;
     }
 }

@@ -14,10 +14,17 @@ public class RayHorizontalBrick : Bricks {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        _touch = true;
-        Vector3 newPos = new Vector3(0, gameObject.transform.position.y, -1);
-        gameObject.transform.GetChild(0).gameObject.transform.position = newPos;
-        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        if (collision.GetComponent<DeathZone>())
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            _touch = true;
+            Vector3 newPos = new Vector3(0, gameObject.transform.position.y, -1);
+            gameObject.transform.GetChild(0).gameObject.transform.position = newPos;
+            gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {

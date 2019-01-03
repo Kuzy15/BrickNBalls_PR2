@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 struct Pos
 {
@@ -18,6 +19,7 @@ public class GameField : MonoBehaviour
 
     public GameObject [] block = new GameObject [6]; //Dif types of blocks
     public GameObject warning;
+    public Text rayPowerUpText; 
 
 
     private GameObject [,] _field = new GameObject [14 , 11];
@@ -36,6 +38,7 @@ public class GameField : MonoBehaviour
         mapReader.Reader(ref _listBlock);
         _numBlocks = 0;
         _rayCont = 0;
+        rayPowerUpText.text = GameManager.gameManagerInstace.GetComponent<GameManager>().GetNRayPowerUp().ToString();
 
         int x = (_listBlock.Count - 1) / 2;
         int indexHits = (_listBlock.Count - 1) / 2 + 1;
@@ -176,32 +179,38 @@ public class GameField : MonoBehaviour
 
     public void RayPowerUpClick()
     {
-        Pos freepos;
-        for (int i = 0; i < 11; i++)
+        if (GameManager.gameManagerInstace.GetNRayPowerUp() > 0)
         {
-            for (int j = 1; j < 10; j++)
+            GameManager.gameManagerInstace.RemoveNRayPowerUp(1);
+            rayPowerUpText.text = GameManager.gameManagerInstace.GetComponent<GameManager>().GetNRayPowerUp().ToString();
+
+            Pos freepos;
+            for (int i = 0; i < 11; i++)
             {
-                if (_field[i, j] == null)
+                for (int j = 1; j < 10; j++)
                 {
-                    freepos = new Pos(i, j);
-                    _freePos.Add(freepos);
+                    if (_field[i, j] == null)
+                    {
+                        freepos = new Pos(i, j);
+                        _freePos.Add(freepos);
+                    }
                 }
             }
-        }
-        for (int a = 0; a < 2; a++)
-        {
-            if (_freePos.Count > 0)
+            for (int a = 0; a < 2; a++)
             {
-                int rnd = Random.Range(0, _freePos.Count - 1);
+                if (_freePos.Count > 0)
+                {
+                    int rnd = Random.Range(0, _freePos.Count - 1);
 
-                Vector3 pos = new Vector3(transform.position.x + _freePos[rnd]._y, transform.position.y - _freePos[rnd]._x - 1.5f, 0);
-                GameObject aux = Instantiate(block[6], transform.position, transform.rotation, transform);
-                aux.transform.position = pos;
-                aux.GetComponent<Bricks>().SetTypeBrick(7);
-                _field[_freePos[rnd]._x, _freePos[rnd]._y] = aux;
-                _freePos.RemoveAt(rnd);
+                    Vector3 pos = new Vector3(transform.position.x + _freePos[rnd]._y, transform.position.y - _freePos[rnd]._x - 1.5f, 0);
+                    GameObject aux = Instantiate(block[6], transform.position, transform.rotation, transform);
+                    aux.transform.position = pos;
+                    aux.GetComponent<Bricks>().SetTypeBrick(7);
+                    _field[_freePos[rnd]._x, _freePos[rnd]._y] = aux;
+                    _freePos.RemoveAt(rnd);
+                }
             }
+            _freePos.Clear();
         }
-        _freePos.Clear();
     }
 }
