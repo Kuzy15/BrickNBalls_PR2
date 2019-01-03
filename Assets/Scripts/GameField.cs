@@ -2,6 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+struct Pos
+{
+    public int _x;
+    public int _y;
+    public Pos(int x, int y)
+    {
+        _x = x;
+        _y = y;
+    }
+}
+
 public class GameField : MonoBehaviour
 {
 
@@ -14,8 +25,8 @@ public class GameField : MonoBehaviour
     private List<int> _listBlock = new List<int>(); 
     private TextAsset _map; //To read the map
     private int _numBlocks;
-    private bool _endBlocks;
-
+    private int _rayCont;
+    private List<Pos> _freePos = new List<Pos>();
 
     // Use this for initialization
     void Start()
@@ -24,6 +35,7 @@ public class GameField : MonoBehaviour
         MapReader mapReader = new MapReader(_map);
         mapReader.Reader(ref _listBlock);
         _numBlocks = 0;
+        _rayCont = 0;
 
         int x = (_listBlock.Count - 1) / 2;
         int indexHits = (_listBlock.Count - 1) / 2 + 1;
@@ -49,6 +61,10 @@ public class GameField : MonoBehaviour
                         {
                             aux.GetComponent<SolidBrick>().SetHits(_listBlock[x + indexHits]);
                         }
+                    }
+                    if(_listBlock[x] == 7)
+                    {
+                        _rayCont++;
                     }
                     _field[i,j] = aux;
                 }
@@ -110,6 +126,10 @@ public class GameField : MonoBehaviour
                             aux.GetComponent<SolidBrick>().SetHits(_extrafield[x + indexHits]);
                         }
                     }
+                    if (_listBlock[x] == 7)
+                    {
+                        _rayCont++;
+                    }
                     _field[0, i] = aux;
                 }
             }
@@ -150,5 +170,30 @@ public class GameField : MonoBehaviour
         {
             LevelManager.levelManagerInstance.EndButtonsActive();
         }
+    }
+
+
+    public void RayPowerUpClick()
+    {
+        Pos freepos;
+        for (int i = 0; i < 11; i++)
+        {
+            for (int j = 1; j < 10; j++)
+            {
+                if (_field[i, j] == null)
+                {
+                    freepos = new Pos(i, j);
+                    _freePos.Add(freepos);
+                }
+            }
+        }
+        int rnd = Random.Range(0, _freePos.Count - 1);
+
+        Vector3 pos = new Vector3(transform.position.x + _freePos[rnd]._y, transform.position.y - _freePos[rnd]._x - 1.5f, 0);
+        GameObject aux = Instantiate(block[6], transform.position, transform.rotation, transform);
+        aux.transform.position = pos;
+        _field[_freePos[rnd]._x, _freePos[rnd]._y] = aux;
+        _freePos.RemoveAt(rnd);
+        _freePos.Clear();
     }
 }

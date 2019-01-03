@@ -6,7 +6,6 @@ public class Bricks : MonoBehaviour {
 
 
     protected int _nHits;
-    protected bool _canDestroy;
 
     public void SetHits(int n)
     {
@@ -16,15 +15,5 @@ public class Bricks : MonoBehaviour {
     public int GetHits()
     {
         return _nHits;
-    }
-
-    public void SetDestroy(bool d)
-    {
-        _canDestroy = d;
-    }
-
-    public bool GetDestroy()
-    {
-        return _canDestroy;
     }
 }

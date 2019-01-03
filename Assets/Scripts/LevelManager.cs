@@ -42,7 +42,7 @@ public class LevelManager : MonoBehaviour {
         resizeManager.GetComponent<ResizeManager>().Resize();
         levelManagerInstance = this;
 
-        _nballs = 15;
+        _nballs = 1;
         _spawn = true;
         _points = 0;
         _sameRoundPoints = 0;

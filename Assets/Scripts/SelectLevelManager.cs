@@ -12,10 +12,13 @@ public class SelectLevelManager : MonoBehaviour {
     public Button[] buttomLevels = new Button[10];
     public TextAsset[] maps = new TextAsset[10];
 
+    public Text rubyText;
 
     // Start is called before the first frame update
     void Start()
     {
+        //resizeManager.GetComponent<ulalaResizeManager>().Resize();
+
         buttomLevels[0].onClick.AddListener(delegate { LoadLevel(maps[0], 0); });
         buttomLevels[1].onClick.AddListener(delegate { LoadLevel(maps[1], 1); });
         buttomLevels[2].onClick.AddListener(delegate { LoadLevel(maps[2], 2); });
@@ -34,7 +37,10 @@ public class SelectLevelManager : MonoBehaviour {
             buttomLevels[i].transform.GetChild(3).gameObject.SetActive(GameManager.gameManagerInstace.levels[i]._stars[2]);
             buttomLevels[i].transform.GetChild(4).gameObject.SetActive(GameManager.gameManagerInstace.levels[i]._lock);
         }
+
+        rubyText.text = GameManager.gameManagerInstace.GetRuby().ToString();
     }
+
 
 
     void LoadLevel(TextAsset map, int level)
@@ -45,5 +51,4 @@ public class SelectLevelManager : MonoBehaviour {
             SceneManager.LoadScene(1);
         }
     }
-
 }

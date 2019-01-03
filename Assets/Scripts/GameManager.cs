@@ -25,12 +25,15 @@ public class GameManager : MonoBehaviour
     public Level[] levels = new Level[10];
 
     private TextAsset _currentMapLevel;
+    private int _ruby;
 
     // Start is called before the first frame update
     private void Awake()
     {
         if (gameManagerInstace == null)
         {
+            //Leer de fichero
+
             gameManagerInstace = this;
 
             DontDestroyOnLoad(gameObject);
@@ -40,6 +43,8 @@ public class GameManager : MonoBehaviour
             {
                 levels[i] = new Level(false, false, false, true);
             }
+
+            _ruby = 100;
         }
     }
 
@@ -55,5 +60,8 @@ public class GameManager : MonoBehaviour
         return _currentMapLevel; 
     }
 
-
+    public int GetRuby()
+    {
+        return _ruby;
+    }
 }

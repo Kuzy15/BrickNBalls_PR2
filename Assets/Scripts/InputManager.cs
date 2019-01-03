@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour {
     private Ray ray;
     
     void FixedUpdate () {
+
         if (LevelManager.levelManagerInstance.GetSpawn()) {
             if (Input.GetMouseButtonDown(0))
             {

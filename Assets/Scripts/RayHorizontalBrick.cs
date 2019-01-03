@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RayHorizontalBrick : Bricks {
+public class RayHorizontalBrick : MonoBehaviour {
 
     private bool _touch = false;
+
+    private void Update()
+    {
+        if (_touch && LevelManager.levelManagerInstance.GetSpawn())
+            Destroy(gameObject);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
