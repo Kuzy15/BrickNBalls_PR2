@@ -6,6 +6,7 @@ public class Bricks : MonoBehaviour {
 
 
     protected int _nHits;
+    protected int _type;
 
     public void SetHits(int n)
     {
@@ -15,5 +16,15 @@ public class Bricks : MonoBehaviour {
     public int GetHits()
     {
         return _nHits;
+    }
+
+    public void SetTypeBrick(int t)
+    {
+        _type = t;
+    }
+
+    public int GetTypeBrick()
+    {
+        return _type;
     }
 }

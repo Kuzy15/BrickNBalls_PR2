@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RayHorizontalBrick : MonoBehaviour {
+public class RayHorizontalBrick : Bricks {
 
     private bool _touch = false;
 
@@ -24,9 +24,9 @@ public class RayHorizontalBrick : MonoBehaviour {
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
     }
 
-    public void DestroyBrick()
+    /*public void DestroyBrick()
     {
         if(_touch && LevelManager.levelManagerInstance.GetSpawn())
             Destroy(gameObject);
-    }
+    }*/
 }

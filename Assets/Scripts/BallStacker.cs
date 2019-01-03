@@ -38,10 +38,6 @@ public class BallStacker : MonoBehaviour {
             Clean(); //Reinicias el numero de bolas stackeadas
             Show(false); //Dejas de mostrar el stacker
             LevelManager.levelManagerInstance.deathZone.GetComponent<DeathZone>().SetFisrtBall(true);
-          /*  if (LevelManager.levelManagerInstance.gameField.GetComponent<RayHorizontalBrick>())
-            {
-                LevelManager.levelManagerInstance.gameField.GetComponent<RayHorizontalBrick>().DestroyBrick();
-            }*/
             if (!LevelManager.levelManagerInstance.GetEndRound())
             {
                 LevelManager.levelManagerInstance.SetSpawn(true);

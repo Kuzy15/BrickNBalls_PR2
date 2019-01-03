@@ -50,6 +50,7 @@ public class GameField : MonoBehaviour
                     Vector3 pos = new Vector3(transform.position.x + j, transform.position.y - i - 1.5f, 0);
                     GameObject aux = Instantiate(block[_listBlock[x] - 1], transform.position, transform.rotation, transform);
                     aux.transform.position = pos;
+                    aux.GetComponent<Bricks>().SetTypeBrick(_listBlock[x]);
                     if (_listBlock[x] <= 6)
                     {
                         _numBlocks++;
@@ -95,7 +96,6 @@ public class GameField : MonoBehaviour
             {
                 if (_field[i, j] != null)
                 {
-
                     Vector3 newPos = new Vector3(_field[i, j].gameObject.transform.position.x, (_field[i, j].gameObject.transform.position.y - 1), _field[i, j].gameObject.transform.position.z);
                     _field[i, j].gameObject.transform.position = newPos;
                     GameObject aux = _field[i, j];
@@ -114,6 +114,7 @@ public class GameField : MonoBehaviour
                     Vector3 pos = new Vector3(transform.position.x + i, transform.position.y - 1.5f, 0);
                     GameObject aux = Instantiate(block[_extrafield[x] - 1], transform.position, transform.rotation, transform);
                     aux.transform.position = pos;
+                    aux.GetComponent<Bricks>().SetTypeBrick(_listBlock[x]);
                     if (_extrafield[x] <= 6)
                     {
                         _numBlocks++;
@@ -153,7 +154,7 @@ public class GameField : MonoBehaviour
         int i = 0;
         while (!active && i < 10)
         {
-            if(_field[11,i] != null)//Si no son bloques especiales
+            if(_field[11, i] != null && _field[11,i].GetComponent<Bricks>().GetTypeBrick() <= 6)
             {
                 active = true;
             }
@@ -187,13 +188,20 @@ public class GameField : MonoBehaviour
                 }
             }
         }
-        int rnd = Random.Range(0, _freePos.Count - 1);
+        for (int a = 0; a < 2; a++)
+        {
+            if (_freePos.Count > 0)
+            {
+                int rnd = Random.Range(0, _freePos.Count - 1);
 
-        Vector3 pos = new Vector3(transform.position.x + _freePos[rnd]._y, transform.position.y - _freePos[rnd]._x - 1.5f, 0);
-        GameObject aux = Instantiate(block[6], transform.position, transform.rotation, transform);
-        aux.transform.position = pos;
-        _field[_freePos[rnd]._x, _freePos[rnd]._y] = aux;
-        _freePos.RemoveAt(rnd);
+                Vector3 pos = new Vector3(transform.position.x + _freePos[rnd]._y, transform.position.y - _freePos[rnd]._x - 1.5f, 0);
+                GameObject aux = Instantiate(block[6], transform.position, transform.rotation, transform);
+                aux.transform.position = pos;
+                aux.GetComponent<Bricks>().SetTypeBrick(7);
+                _field[_freePos[rnd]._x, _freePos[rnd]._y] = aux;
+                _freePos.RemoveAt(rnd);
+            }
+        }
         _freePos.Clear();
     }
 }
