@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
+[System.Serializable]
 public struct Level
 {
     public bool[] _stars;
@@ -22,10 +23,13 @@ public class GameManager : MonoBehaviour
 {
 
     public static  GameManager gameManagerInstace;
-    public Level[] levels = new Level[10];
 
     private TextAsset _currentMapLevel;
+    private Level[] _levels = new Level[10];
+
+    [SerializeField]
     private int _ruby;
+    [SerializeField]
     private int _nRayPowerUp;
 
     // Start is called before the first frame update
@@ -39,15 +43,16 @@ public class GameManager : MonoBehaviour
 
             DontDestroyOnLoad(gameObject);
 
-            levels[0] = new Level(false, false, false, false);
-            for (int i = 1; i < levels.Length; i++)
+            _levels[0] = new Level(false, false, false, false);
+            for (int i = 1; i < _levels.Length; i++)
             {
-                levels[i] = new Level(false, false, false, true);
+                _levels[i] = new Level(false, false, false, true);
             }
 
             _ruby = 100;
             _nRayPowerUp = 2;
         }
+        Load();
     }
 
 
@@ -60,6 +65,11 @@ public class GameManager : MonoBehaviour
     public TextAsset GetMapLevel()
     {
         return _currentMapLevel; 
+    }
+
+    public Level[] GetLevels()
+    {
+        return _levels;
     }
 
     public int GetRuby()
@@ -90,5 +100,37 @@ public class GameManager : MonoBehaviour
     public void RemoveNRayPowerUp(int rpu)
     {
         _nRayPowerUp -= rpu;
+    }
+
+    public static void Save()
+    {
+        BinaryFormatter bf = new BinaryFormatter();
+        //Application.persistentDataPath is a string, so if you wanted you can put that into debug.log if you want to know where save games are located
+        FileStream file = File.Create(Application.persistentDataPath + "/savedGames.txt"); //you can call it anything you want
+        bf.Serialize(file, GameManager.gameManagerInstace.GetLevels());
+        bf.Serialize(file, GameManager.gameManagerInstace.GetRuby());
+        bf.Serialize(file, GameManager.gameManagerInstace.GetNRayPowerUp());
+        file.Close();
+    }
+
+    public static void Load()
+    {
+        if (File.Exists(Application.persistentDataPath + "/savedGames.txt"))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/savedGames.txt", FileMode.Open);
+            Level[] readLevel = (Level[])bf.Deserialize(file);
+            int readRuby = (int)bf.Deserialize(file);
+            int readRayPowerUp = (int)bf.Deserialize(file);
+            file.Close();
+
+            for (int i = 0; i < GameManager.gameManagerInstace._levels.Length; i++)
+            {
+                GameManager.gameManagerInstace._levels[i] = readLevel[i];
+            }
+
+            GameManager.gameManagerInstace._ruby = readRuby;
+            GameManager.gameManagerInstace._nRayPowerUp = readRayPowerUp;
+        }
     }
 }

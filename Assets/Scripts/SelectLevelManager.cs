@@ -30,12 +30,12 @@ public class SelectLevelManager : MonoBehaviour {
         buttomLevels[8].onClick.AddListener(delegate { LoadLevel(maps[8], 8); });
         buttomLevels[9].onClick.AddListener(delegate { LoadLevel(maps[9], 9); });
         
-        for(int i = 0; i < GameManager.gameManagerInstace.levels.Length; i++)
+        for(int i = 0; i < GameManager.gameManagerInstace.GetLevels().Length; i++)
         {
-            buttomLevels[i].transform.GetChild(1).gameObject.SetActive(GameManager.gameManagerInstace.levels[i]._stars[0]);
-            buttomLevels[i].transform.GetChild(2).gameObject.SetActive(GameManager.gameManagerInstace.levels[i]._stars[1]);
-            buttomLevels[i].transform.GetChild(3).gameObject.SetActive(GameManager.gameManagerInstace.levels[i]._stars[2]);
-            buttomLevels[i].transform.GetChild(4).gameObject.SetActive(GameManager.gameManagerInstace.levels[i]._lock);
+            buttomLevels[i].transform.GetChild(1).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._stars[0]);
+            buttomLevels[i].transform.GetChild(2).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._stars[1]);
+            buttomLevels[i].transform.GetChild(3).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._stars[2]);
+            buttomLevels[i].transform.GetChild(4).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._lock);
         }
 
         rubyText.text = GameManager.gameManagerInstace.GetRuby().ToString();
