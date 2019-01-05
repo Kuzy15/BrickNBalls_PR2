@@ -46,6 +46,10 @@ public class BallStacker : MonoBehaviour {
         }
     }
 
+    public void AddBallStacked()
+    {
+        _ballStacked++;
+    }
 
     public int GetBallStacked() //Devuelve las bolas stackeadas
     {

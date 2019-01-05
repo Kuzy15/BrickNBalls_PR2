@@ -17,7 +17,7 @@ struct Pos
 public class GameField : MonoBehaviour
 {
 
-    public GameObject [] block = new GameObject [6]; //Dif types of blocks
+    public GameObject [] block = new GameObject [8]; //Dif types of blocks
     public GameObject warning;
     public Text rayPowerUpText; 
 
@@ -88,7 +88,6 @@ public class GameField : MonoBehaviour
         }
     }
 
-
     public void MoveBlocks()
     {
         int x = (_extrafield.Count - 1) / 2;
@@ -144,6 +143,7 @@ public class GameField : MonoBehaviour
             _extrafield.RemoveRange(_extrafield.Count - 12, 11);
             _extrafield.RemoveRange(x, 11);
         }
+        EndGame();
     }
 
     public void SetMapsLevel(TextAsset mapLevel)
@@ -165,6 +165,25 @@ public class GameField : MonoBehaviour
             i++;
         }
         warning.SetActive(active);
+    }
+
+    void EndGame()
+    {
+        bool active = false;
+        int i = 0;
+        while (!active && i < 10)
+        {
+            if (_field[12, i] != null && _field[12, i].GetComponent<Bricks>().GetTypeBrick() <= 6)
+            {
+                active = true;
+            }
+
+            i++;
+        }
+        if (active)
+        {
+            LevelManager.levelManagerInstance.LoseButtonsActive();
+        }
     }
 
     public void RemoveBlock()

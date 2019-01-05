@@ -105,8 +105,7 @@ public class GameManager : MonoBehaviour
     public static void Save()
     {
         BinaryFormatter bf = new BinaryFormatter();
-        //Application.persistentDataPath is a string, so if you wanted you can put that into debug.log if you want to know where save games are located
-        FileStream file = File.Create(Application.persistentDataPath + "/savedGames.txt"); //you can call it anything you want
+        FileStream file = File.Create(Application.persistentDataPath + "/savedGames.txt");
         bf.Serialize(file, GameManager.gameManagerInstace.GetLevels());
         bf.Serialize(file, GameManager.gameManagerInstace.GetRuby());
         bf.Serialize(file, GameManager.gameManagerInstace.GetNRayPowerUp());

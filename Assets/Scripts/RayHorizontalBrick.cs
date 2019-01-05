@@ -30,10 +30,4 @@ public class RayHorizontalBrick : Bricks {
     {
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
     }
-
-    /*public void DestroyBrick()
-    {
-        if(_touch && LevelManager.levelManagerInstance.GetSpawn())
-            Destroy(gameObject);
-    }*/
 }

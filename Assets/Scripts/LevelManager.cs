@@ -24,6 +24,8 @@ public class LevelManager : MonoBehaviour {
     public Button homeEnd;
     public Button restartEnd;
     public Button nextEnd;
+    public Button homeLose;
+    public Button restartLose;
 
 
     private int _nballs;
@@ -56,6 +58,8 @@ public class LevelManager : MonoBehaviour {
         homeEnd.gameObject.SetActive(false);
         restartEnd.gameObject.SetActive(false);
         nextEnd.gameObject.SetActive(false);
+        restartLose.gameObject.SetActive(false);
+        homeLose.gameObject.SetActive(false);
 
         _paused = false;
         _endRound = false;
@@ -65,6 +69,7 @@ public class LevelManager : MonoBehaviour {
 
     private void Update()
     {
+        Debug.Log(_nballs);
     }
 
     public void SetNBalls(int n)
@@ -75,6 +80,11 @@ public class LevelManager : MonoBehaviour {
     public int GetNBalls()
     {
         return _nballs;
+    }
+
+    public void AddBall()
+    {
+        _nballs++;
     }
 
     public void SetSpawn(bool s)
@@ -214,5 +224,12 @@ public class LevelManager : MonoBehaviour {
         homeEnd.gameObject.SetActive(true);
         restartEnd.gameObject.SetActive(true);
         nextEnd.gameObject.SetActive(true);
+    }
+
+    public void LoseButtonsActive()
+    {
+        _spawn = false;
+        homeLose.gameObject.SetActive(true);
+        restartLose.gameObject.SetActive(true);
     }
 }
