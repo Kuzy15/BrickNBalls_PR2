@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class BallSpawn : MonoBehaviour {
 
-    public GameObject ballPrefab;
+    private Ball _ball;
 
-    private int _nBalls;
+    private uint _nBalls;
     private Vector3 _posDest;
 
 
-    // Use this for initialization
-    void Start () {
-        _nBalls = LevelManager.levelManagerInstance.GetNBalls();
+   
+    public void Init(Ball ballPrefab, uint nBalls) {
+
+        _ball = ballPrefab;
+        _nBalls = nBalls;
     }
 
-    public void SpawnBalls()
+    public void SpawnBalls() // SpawnBalls(numBalls, dir)
     {
         StartCoroutine(SpawnBall());
     }
@@ -31,7 +33,7 @@ public class BallSpawn : MonoBehaviour {
                 wait++;
                 if (wait > 3)
                 {
-                    Instantiate(ballPrefab, transform.position, transform.rotation).GetComponent<Ball>().StartMoving(_posDest); //Creas una bola y le das la velocidad
+                    Instantiate(_ball, transform.position, transform.rotation).GetComponent<Ball>().StartMoving(_posDest); //Creas una bola y le das la velocidad
                     _nBalls--;
                     GetComponentInChildren<TextMesh>().text = "x" + (_nBalls).ToString();
                     wait = 0;
@@ -58,7 +60,7 @@ public class BallSpawn : MonoBehaviour {
     }
 
 
-    public void SetNBalls(int n) //Modifica el numero de bolas
+    public void SetNBalls(uint n) //Modifica el numero de bolas
     {
         _nBalls = n;
     }

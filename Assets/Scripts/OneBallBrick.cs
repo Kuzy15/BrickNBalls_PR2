@@ -13,7 +13,7 @@ public class OneBallBrick : Bricks {
         else
         {
             LevelManager.levelManagerInstance.AddBall();
-            LevelManager.levelManagerInstance.stacker.GetComponent<BallStacker>().AddBallStacked();
+            LevelManager.levelManagerInstance._ballStacker.AddBall();
             Destroy(gameObject);
         }
     }

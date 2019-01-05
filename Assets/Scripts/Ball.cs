@@ -4,22 +4,36 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour {
 
-
+    private Rigidbody2D _rb;
     private Vector3 _dir;
     private Vector3 _vel;
 
-    public void StartMoving(Vector3 pos)
+    void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+
+#if UNITY_EDITOR
+        if (_rb == null)
+            Debug.Log("Ball's rigidbody is null ");
+
+#endif
+    }
+
+
+    public void StartMoving(Vector3 pos) // StartMoving(pos, velocity)
     {
         float mod = Mathf.Sqrt(Mathf.Pow(pos.x - transform.position.x, 2) + Mathf.Pow(pos.y - transform.position.y, 2));
         _dir.x = (pos.x - transform.position.x) / mod;
         _dir.y = (pos.y - transform.position.y) / mod;
-        GetComponent<Rigidbody2D>().velocity = new Vector3(_dir.x * 15, _dir.y * 15);
+        _rb.velocity = new Vector3(_dir.x * 15, _dir.y * 15);
 
     }
 
-    public void GoTo(Vector3 pos, System.Action<Ball> callback = null) {
+    public void GoTo(Vector3 pos, System.Action<Ball> callback = null) { // GoTo(pos, float time, ...callback)
+
         float mod = Mathf.Sqrt(Mathf.Pow(pos.x - transform.position.x, 2) + Mathf.Pow(pos.y - transform.position.y, 2));
         _dir.x = (pos.x - transform.position.x) / mod;
+
         StartCoroutine(GoToCoroutine(pos, callback));
 
     }
@@ -42,15 +56,22 @@ public class Ball : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    public void Pause()
+    // Stop the ball
+    public void Stop()
     {
-        _vel = GetComponent<Rigidbody2D>().velocity;
-        GetComponent<Rigidbody2D>().velocity = new Vector3();
+        _rb.velocity = new Vector2(0, 0);
     }
 
+    // Save current ball's velocity and stop the ball
+    public void Pause()
+    {
+        _vel = _rb.velocity;
+        _rb.velocity = new Vector2(0, 0);
+    }
+    // Change balls's velocity to it's last one
     public void Continue()
     {
-        GetComponent<Rigidbody2D>().velocity = new Vector3(_vel.x,_vel.y);
+       _rb.velocity = new Vector3(_vel.x,_vel.y);
     }
 
 }

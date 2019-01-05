@@ -5,28 +5,36 @@ using UnityEngine;
 
 public class DeathZone : MonoBehaviour {
 
-   
+    // HACER: ESTE SCRIPT SOLO TIENE UN ONTRIGGERENTER EN EL QUE SI UNA BOLA ENTRA SE INFORMA AL LEVEL MANAGER.
+
+    private LevelManager _levelManager;
+
     private bool _firstBall;
-    private Vector3 _posStacker;
+   // private Vector3 _posStacker;
+
+    public void Init(LevelManager levelManager)
+    {
+        _levelManager = levelManager;
+    }
 
 
-    // Use this for initialization
+  /*  // Use this for initialization
     void Start () {
         _firstBall = true;
 	}
-
+    */
     public void SetFisrtBall(bool b)
     {
         _firstBall = b;
     }
-
+/*
     public bool GetFirstBall()
     {
         return _firstBall;
     }
 	
-	
-    private void OnCollisionEnter2D(Collision2D collision) //Cuando colisionas con la DeathZone
+	*/
+    /*private void OnCollisionEnter2D(Collision2D collision) //Cuando colisionas con la DeathZone
     {
         if(collision.gameObject.tag == "Ball")
         {
@@ -48,6 +56,21 @@ public class DeathZone : MonoBehaviour {
                 collision.gameObject.GetComponent<Ball>().GoTo(_posStacker);
                 LevelManager.levelManagerInstance.stacker.GetComponent<BallStacker>().AddBall(); //Añades una bola al stacker
             }
+        }
+    }*/
+
+
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        Ball b = col.GetComponent<Ball>();
+
+        if(b != null)
+        {
+            b.Stop();
+            _levelManager.BallIntoDeathZone(b);
+           
+
         }
     }
 }

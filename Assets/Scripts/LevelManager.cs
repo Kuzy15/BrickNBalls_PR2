@@ -8,10 +8,19 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour {
 
 
-    public GameObject spawner;
+   /* public GameObject spawner;
     public GameObject stacker;
     public GameObject deathZone;
-    public GameObject gameField;
+    public GameObject gameField;*/
+
+
+    public BallSpawn _ballSpawner;
+    public BallStacker _ballStacker;
+    public DeathZone _deathZone;
+    public GameField _gameField; // BoardManager
+    // public AimController _aimController;
+
+    public Ball _ballPrefab;
 
     public GameObject resizeManager;
 
@@ -28,26 +37,33 @@ public class LevelManager : MonoBehaviour {
     public Button restartLose;
 
 
-    private int _nballs;
+    private uint _nballs;
     private bool _spawn;
     private int _points;
     private int _sameRoundPoints;
     private bool _paused;
     private bool _endRound;
+    private bool _firstBall;
+
     private GameObject[] _pausedObjects;
 
     public static LevelManager levelManagerInstance;
 
-    // Use this for initialization
-    void Start()
+   
+    void Awake()
     {
-        resizeManager.GetComponent<ResizeManager>().Resize();
-        levelManagerInstance = this;
-
-        _nballs = 10;
+        _nballs = 12;
         _spawn = true;
         _points = 0;
         _sameRoundPoints = 0;
+        _firstBall = true;
+
+        _deathZone.Init(this);
+        _ballSpawner.Init(_ballPrefab, _nballs);
+        _ballStacker.Init();
+        resizeManager.GetComponent<ResizeManager>().Resize();
+        levelManagerInstance = this;
+
 
         scoreText.GetComponent<Text>().text = "Points: " + _points.ToString();
 
@@ -72,12 +88,12 @@ public class LevelManager : MonoBehaviour {
         Debug.Log(_nballs);
     }
 
-    public void SetNBalls(int n)
+    public void SetNBalls(uint n)
     {
         _nballs = n;
     }
 
-    public int GetNBalls()
+    public uint GetNBalls()
     {
         return _nballs;
     }
@@ -97,14 +113,9 @@ public class LevelManager : MonoBehaviour {
         return _spawn;
     }
 
-    public void SetPosStacker(Vector3 pos)
-    {
-        stacker.transform.position = pos;
-    }
-
     public void MoveBlocks()
     {
-        gameField.GetComponent<GameField>().MoveBlocks();
+        _gameField.MoveBlocks();
     }
 
     public void AddPoints()
@@ -126,7 +137,7 @@ public class LevelManager : MonoBehaviour {
 
     public void OnClickPauseMenu()
     {
-        _pausedObjects = GameObject.FindGameObjectsWithTag("Ball");
+        _pausedObjects = GameObject.FindGameObjectsWithTag("Ball"); // HACER: CAMBIAR ESTO, NO ES BUENO BUSCAR CON TAG
         for(int i =0; i < _pausedObjects.Length; i++)
         {
             _pausedObjects[i].GetComponent<Ball>().Pause();
@@ -232,4 +243,68 @@ public class LevelManager : MonoBehaviour {
         homeLose.gameObject.SetActive(true);
         restartLose.gameObject.SetActive(true);
     }
+
+    /*
+     * A ball has came into the death zone, check if it's the first and 
+     * change the ball stacker position to this first ball position.
+     * If it's not the first ball move the ball to the ball stacker and destroy the ball.
+     */
+    public void BallIntoDeathZone(Ball ball)
+    {
+
+        
+        if (_firstBall) // The ball arrived is the first one
+        {
+            _firstBall = false;
+            Vector2 posBallStacker = new Vector2(ball.transform.position.x, ball.transform.position.y + 0.3f);
+            _ballStacker.SetPos(posBallStacker);         
+            _ballStacker.Show(true); // Make visible the ball stacker
+            ProcessPlay(ball);
+            Destroy(ball.gameObject);
+
+        }
+        else
+        {
+            ball.GoTo(_ballStacker.transform.position);
+            ProcessPlay(ball); // HACER: SI SE PONE COMO PARAMETRO (CALLBACK) DEL METODO GOTO VA MAL¿?
+        }
+
+    }
+
+    // Check the state of the game after making a play
+    private void ProcessPlay(Ball ball)
+    {
+
+        _ballStacker.AddBall(); // Add one ball to the balls counter
+      
+
+        if (_ballStacker.GetBallStacked() == _nballs) // All balls has been stacked
+        {
+            // HACER: COMPROBAR SI EL NIVEL SE HA COMPLETADO, SI SE HA PERDIDO Y SI HAY QUE ACTIVAR LOS AVISOS. 
+            // HACERLO SEGUN LOS METODOS QUE TENEMOS EN EL SCRIPT DE GAMEFIELD, PARA LLAMARLOS CON _gameField.CheckEndLevel() POR EJEMPLO
+
+
+
+            _ballSpawner.MoveTo(_ballStacker.transform.position); // Spawn position is the ball stacker last position
+            _ballSpawner.Show(true); 
+            _ballSpawner.SetNBalls(_nballs); // Update the number of balls, it could have changed
+
+            ResetSameRoundPoints();
+
+            _ballStacker.ResetNumBalls(); //Reinicias el numero de bolas stackeadas     
+            
+            _firstBall = true;
+
+            if (!GetEndRound())
+            {
+              SetSpawn(true);
+            }
+
+
+            MoveBlocks();
+        }
+
+    }
+
+
 }

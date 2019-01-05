@@ -106,7 +106,9 @@ public class GameField : MonoBehaviour
                 }
             }
         }
+
         ActiveWarnings();
+
         if (_extrafield.Count > 0)
         {
             for (int i = 0; i < 11; i++, x--)
