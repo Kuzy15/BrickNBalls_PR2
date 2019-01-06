@@ -179,14 +179,6 @@ public class LevelManager : MonoBehaviour {
     {
         string name = GameManager.gameManagerInstace.GetMapLevel().name;
         int level = name[name.Length - 1] - 48;
-        GameManager.gameManagerInstace.GetLevels()[level]._lock = false;
-        ///En funcion de los ptnos conseguidos
-        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[0] = true;
-        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[1] = true;
-        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
-        ///
-
-        GameManager.Save();
         TextAsset nextLevel = Resources.Load("Maps/mapdata" + (level + 1).ToString()) as TextAsset;
         GameManager.gameManagerInstace.SetMapLevel(nextLevel);
         SceneManager.LoadScene(1);
@@ -194,27 +186,11 @@ public class LevelManager : MonoBehaviour {
 
     public void OnClickRestartEndMenu()
     {
-        string name = GameManager.gameManagerInstace.GetMapLevel().name;
-        int level = name[name.Length - 1] - 48;
-        GameManager.gameManagerInstace.GetLevels()[level]._lock = false;
-        ///En funcion de los ptnos conseguidos
-        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[0] = true;
-        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[1] = true;
-        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
-        ///
         SceneManager.LoadScene(1);
     }
 
     public void OnClickHomeEndMenu()
     {
-        string name = GameManager.gameManagerInstace.GetMapLevel().name;
-        int level = name[name.Length - 1] - 48;
-        GameManager.gameManagerInstace.GetLevels()[level]._lock = false;
-        ///En funcion de los ptnos conseguidos
-        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[0] = true;
-        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[1] = true;
-        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
-        ///
         SceneManager.LoadScene(0);
     }
 
@@ -232,6 +208,15 @@ public class LevelManager : MonoBehaviour {
     {
         _spawn = false;
         _endRound = true;
+        string name = GameManager.gameManagerInstace.GetMapLevel().name;
+        int level = name[name.Length - 1] - 48;
+        GameManager.gameManagerInstace.GetLevels()[level]._lock = false;
+        ///En funcion de los ptnos conseguidos
+        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[0] = true;
+        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[1] = true;
+        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
+        ///
+        GameManager.Save();
         homeEnd.gameObject.SetActive(true);
         restartEnd.gameObject.SetActive(true);
         nextEnd.gameObject.SetActive(true);

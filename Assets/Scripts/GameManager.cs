@@ -51,8 +51,8 @@ public class GameManager : MonoBehaviour
 
             _ruby = 100;
             _nRayPowerUp = 2;
+            Load();
         }
-        Load();
     }
 
 

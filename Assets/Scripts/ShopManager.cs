@@ -27,13 +27,14 @@ public class ShopManager : MonoBehaviour {
     public void OnClickAdRubyReward()
     {
         adsManager.GetComponent<AdsManager>().ShowRewardedAd();
+        GameManager.gameManagerInstace.AddRuby(30);
+        GameManager.Save();
     }
 
     public void OnClickBuyRayPowerUp()
     {
         GameManager.gameManagerInstace.RemoveRuby(25); ;
         GameManager.gameManagerInstace.AddNRayPowerUp(1);
-    }
-
-   
+        GameManager.Save();
+    }   
 }

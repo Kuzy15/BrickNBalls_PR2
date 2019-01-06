@@ -233,5 +233,6 @@ public class GameField : MonoBehaviour
             }
             _freePos.Clear();
         }
+        GameManager.Save();
     }
 }
