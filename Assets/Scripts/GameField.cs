@@ -17,20 +17,20 @@ struct Pos
 public class GameField : MonoBehaviour
 {
 
-    public GameObject [] block = new GameObject [8]; //Dif types of blocks
-    public GameObject warning;
-    public Text rayPowerUpText; 
+    public GameObject [] _block = new GameObject [8]; //Dif types of blocks
+    public Text _rayPowerUpText; 
 
 
-    private GameObject [,] _field = new GameObject [14 , 11];
-    private List<int> _extrafield = new List<int>();
-    private List<int> _listBlock = new List<int>(); 
+    private GameObject [,] _field = new GameObject [14 , 11]; //Board for gameObjects(bricks)
+    private List<int> _extrafield = new List<int>(); //List for bricks that doesn´t fit in the board 
+    private List<int> _listBlock = new List<int>(); //List for the types and hits of blocks
     private TextAsset _map; //To read the map
-    private int _numBlocks;
-    private int _rayCont;
-    private List<Pos> _freePos = new List<Pos>();
+    private int _numBlocks; //bricks counter
+    private int _rayCont; //rayBricks counter
+    private List<Pos> _freePos = new List<Pos>(); //Free positons of the board
 
     // Use this for initialization
+    //Init all variables, maps, gameObjects, counters ...
     void Start()
     {
         _map = GameManager.gameManagerInstace.GetMapLevel();
@@ -38,20 +38,20 @@ public class GameField : MonoBehaviour
         mapReader.Reader(ref _listBlock);
         _numBlocks = 0;
         _rayCont = 0;
-        rayPowerUpText.text = GameManager.gameManagerInstace.GetComponent<GameManager>().GetNRayPowerUp().ToString();
+        _rayPowerUpText.text = GameManager.gameManagerInstace.GetComponent<GameManager>().GetNRayPowerUp().ToString();
 
         int x = (_listBlock.Count - 1) / 2;
         int indexHits = (_listBlock.Count - 1) / 2 + 1;
+
+        //Fill the field and create the gameObjects
         for (int i = 10; i >= 0; i--)
         {
             for (int j = 10; j >= 0; j--)
             {
-                ///Creas un bloque de este tipo
-                ///y se  lo asignas
                 if (_listBlock[x] != 0)
                 {
                     Vector3 pos = new Vector3(transform.position.x + j, transform.position.y - i - 1.5f, 0);
-                    GameObject aux = Instantiate(block[_listBlock[x] - 1], transform.position, transform.rotation, transform);
+                    GameObject aux = Instantiate(_block[_listBlock[x] - 1], transform.position, transform.rotation, transform);
                     aux.transform.position = pos;
                     aux.GetComponent<Bricks>().SetTypeBrick(_listBlock[x]);
                     if (_listBlock[x] <= 6)
@@ -75,7 +75,9 @@ public class GameField : MonoBehaviour
                 x--;
             }
         }
-        if(x > 0)
+
+        //The rest of bricks are saved separately 
+        if (x > 0)
         {
             for (int i = x; i >= 0; i--)
             {
@@ -88,6 +90,10 @@ public class GameField : MonoBehaviour
         }
     }
 
+    //Move gameObject in 'logic' matrix (field) and in the secene
+    //Check if there are bricks that must destroy like rayBricks(destroy at next round), other example is if the bricks
+    //can go down, should check here and do something
+    //If you have elements in extraField you create gameObject at matrix and scene at first and top positions respectively
     public void MoveBlocks()
     {
         int x = (_extrafield.Count - 1) / 2;
@@ -98,17 +104,23 @@ public class GameField : MonoBehaviour
             {
                 if (_field[i, j] != null)
                 {
-                    Vector3 newPos = new Vector3(_field[i, j].gameObject.transform.position.x, (_field[i, j].gameObject.transform.position.y - 1), _field[i, j].gameObject.transform.position.z);
-                    _field[i, j].gameObject.transform.position = newPos;
-                    GameObject aux = _field[i, j];
-                    _field[i, j] = null;
-                    _field[i + 1, j] = aux;
+                    if (_field[i, j].gameObject.GetComponent<Bricks>().GetCanDestroy())
+                    {
+                        Destroy(_field[i, j].gameObject);
+                    }
+                    else
+                    {
+                        Vector3 newPos = new Vector3(_field[i, j].gameObject.transform.position.x, (_field[i, j].gameObject.transform.position.y - 1), _field[i, j].gameObject.transform.position.z);
+                        _field[i, j].gameObject.transform.position = newPos;
+                        GameObject aux = _field[i, j];
+                        _field[i, j] = null;
+                        _field[i + 1, j] = aux;
+                    }
                 }
             }
         }
 
-        ActiveWarnings();
-
+        //Case of have extraField
         if (_extrafield.Count > 0)
         {
             for (int i = 0; i < 11; i++, x--)
@@ -116,7 +128,7 @@ public class GameField : MonoBehaviour
                 if (_extrafield[x] != 0)
                 {
                     Vector3 pos = new Vector3(transform.position.x + i, transform.position.y - 1.5f, 0);
-                    GameObject aux = Instantiate(block[_extrafield[x] - 1], transform.position, transform.rotation, transform);
+                    GameObject aux = Instantiate(_block[_extrafield[x] - 1], transform.position, transform.rotation, transform);
                     aux.transform.position = pos;
                     aux.GetComponent<Bricks>().SetTypeBrick(_listBlock[x]);
                     if (_extrafield[x] <= 6)
@@ -145,15 +157,11 @@ public class GameField : MonoBehaviour
             _extrafield.RemoveRange(_extrafield.Count - 12, 11);
             _extrafield.RemoveRange(x, 11);
         }
-        EndGame();
+        ///EndGame(); No se si hay que quitarlo comprobar
     }
 
-    public void SetMapsLevel(TextAsset mapLevel)
-    {
-        _map = mapLevel;
-    }
-
-    void ActiveWarnings()
+    //Check if is necessary active the warnings
+    public bool ActiveWarnings()
     {
         bool active = false;
         int i = 0;
@@ -166,10 +174,11 @@ public class GameField : MonoBehaviour
 
             i++;
         }
-        warning.SetActive(active);
+        return active;
     }
 
-    void EndGame()
+    //Check if you lose the game
+    public bool EndGame()
     {
         bool active = false;
         int i = 0;
@@ -182,28 +191,33 @@ public class GameField : MonoBehaviour
 
             i++;
         }
-        if (active)
-        {
-            LevelManager.levelManagerInstance.LoseButtonsActive();
-        }
+        return active;
     }
 
+    //Subtract one brick from the counter
     public void RemoveBlock()
     {
         _numBlocks--;
-        if(_extrafield.Count == 0 && _numBlocks == 0)
-        {
-            LevelManager.levelManagerInstance.EndButtonsActive();
-        }
     }
 
+    //Check if you destroy all bricks and there aren´t anymore on extrafield
+    public bool WinGame() { 
+        if(_extrafield.Count == 0 && _numBlocks == 0)
+        {
+            return true;
+        }
+        return false;
+    }
 
+    //If you have got ray powerup, see the free positions of the board and it creates two
+    //rayBricks in a random free position
+    //Then save the game
     public void RayPowerUpClick()
     {
         if (GameManager.gameManagerInstace.GetNRayPowerUp() > 0)
         {
             GameManager.gameManagerInstace.RemoveNRayPowerUp(1);
-            rayPowerUpText.text = GameManager.gameManagerInstace.GetComponent<GameManager>().GetNRayPowerUp().ToString();
+            _rayPowerUpText.text = GameManager.gameManagerInstace.GetComponent<GameManager>().GetNRayPowerUp().ToString();
 
             Pos freepos;
             for (int i = 0; i < 11; i++)
@@ -224,7 +238,7 @@ public class GameField : MonoBehaviour
                     int rnd = Random.Range(0, _freePos.Count - 1);
 
                     Vector3 pos = new Vector3(transform.position.x + _freePos[rnd]._y, transform.position.y - _freePos[rnd]._x - 1.5f, 0);
-                    GameObject aux = Instantiate(block[6], transform.position, transform.rotation, transform);
+                    GameObject aux = Instantiate(_block[6], transform.position, transform.rotation, transform);
                     aux.transform.position = pos;
                     aux.GetComponent<Bricks>().SetTypeBrick(7);
                     _field[_freePos[rnd]._x, _freePos[rnd]._y] = aux;

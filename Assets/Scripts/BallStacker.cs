@@ -12,50 +12,34 @@ public class BallStacker : MonoBehaviour {
         ResetNumBalls();
     }
 
-    public void SetPos(Vector2 pos) //Da la posicion al stacker
+    //Give the position to the stacker
+    public void SetPos(Vector2 pos)
     {
         transform.position = new Vector3(pos.x, pos.y, 0);
     }
 
-    public void Show(bool s) //Activa y desactiva tanto el script como el render
+    //Active and deactive the script and render
+    public void Show(bool s)
     {
         GetComponent<SpriteRenderer>().enabled = s;
         _label.GetComponentInChildren<MeshRenderer>().enabled = s;
     }
 
-    public void AddBall() //Añade una bola
+    //Add one ball
+    public void AddBall()
     {
         _ballStacked++;
-       _label.text = "x" + (_ballStacked).ToString();
-
-       /*if (_ballStacked == LevelManager.levelManagerInstance.GetNBalls()) //Conmpruebas si ya han colisionado todas
-        {
-            LevelManager.levelManagerInstance._ballSpawner.MoveTo(transform.position); //Le das al spawn su primera posicion
-            LevelManager.levelManagerInstance._ballSpawner.Show(true); //Muestras el spawner
-            LevelManager.levelManagerInstance._ballSpawner.SetNBalls(_ballStacked); //Le das al spawner el numero de boals stackeadas
-            LevelManager.levelManagerInstance.ResetSameRoundPoints();
-            Reset(); //Reinicias el numero de bolas stackeadas
-            Show(false); //Dejas de mostrar el stacker
-            LevelManager.levelManagerInstance._deathZone.SetFisrtBall(true);
-            if (!LevelManager.levelManagerInstance.GetEndRound())
-            {
-                LevelManager.levelManagerInstance.SetSpawn(true);
-            }
-            LevelManager.levelManagerInstance.MoveBlocks();
-        }*/
+        _label.text = "x" + (_ballStacked).ToString();
     }
 
-   /* public void AddBallStacked() // HACER: ESTO TENDRÍA QUE SOBRAR Y EL ADDBALL DE ARRIBA SOLO HACER LAS DOS PRIMERAS LINEAS
-    {
-        _ballStacked++;
-    }*/
-
-    public uint GetBallStacked() //Devuelve las bolas stackeadas
+    //Get all stacked balls
+    public uint GetBallStacked()
     {
         return _ballStacked;
     }
 
-    public void ResetNumBalls() //Reinicia elcontador
+    //Reset stacked balls counter
+    public void ResetNumBalls()
     {
         _ballStacked = 0;
     }

@@ -5,23 +5,23 @@ using UnityEngine;
 public class BallSpawn : MonoBehaviour {
 
     private Ball _ball;
-
     private uint _nBalls;
     private Vector3 _posDest;
 
-
-   
+    //Init variables
     public void Init(Ball ballPrefab, uint nBalls) {
 
         _ball = ballPrefab;
         _nBalls = nBalls;
     }
 
-    public void SpawnBalls() // SpawnBalls(numBalls, dir)
+    //Start spawn coroutine
+    public void SpawnBalls()
     {
         StartCoroutine(SpawnBall());
     }
 
+    //Spawn a number of balls with a vel in a dir
     private IEnumerator SpawnBall()
     {
         int wait = 0; 
@@ -33,7 +33,7 @@ public class BallSpawn : MonoBehaviour {
                 wait++;
                 if (wait > 3)
                 {
-                    Instantiate(_ball, transform.position, transform.rotation).GetComponent<Ball>().StartMoving(_posDest); //Creas una bola y le das la velocidad
+                    Instantiate(_ball, transform.position, transform.rotation).GetComponent<Ball>().StartMoving(_posDest); //Create a ball and set a velocity
                     _nBalls--;
                     GetComponentInChildren<TextMesh>().text = "x" + (_nBalls).ToString();
                     wait = 0;
@@ -47,25 +47,26 @@ public class BallSpawn : MonoBehaviour {
         }
     }
 
-
-
-    public void MoveTo(Vector2 pos) //Mueve elspawner hacia una nueva posicion
+    //Move the spawner to a new position
+    public void MoveTo(Vector2 pos) 
     {
         gameObject.transform.position = new Vector3(pos.x, pos.y, 0);
     }
 
-    public void SetPosDest(Vector3 pos) //Coger la posicion clickeada para establecer la dir de la bola
+    //Get clicked position to set the ball´s dir
+    public void SetPosDest(Vector3 pos) 
     {
         _posDest = pos;
     }
 
-
-    public void SetNBalls(uint n) //Modifica el numero de bolas
+    //Set a numebr of balls
+    public void SetNBalls(uint n)
     {
         _nBalls = n;
     }
 
-    public void Show(bool s) //Muestra el spawner
+    //Show the spawner
+    public void Show(bool s)
     {
         gameObject.GetComponent<SpriteRenderer>().enabled = s;
 

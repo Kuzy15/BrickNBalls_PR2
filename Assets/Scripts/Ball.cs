@@ -10,16 +10,10 @@ public class Ball : MonoBehaviour {
 
     void Awake()
     {
-        _rb = GetComponent<Rigidbody2D>();
-
-#if UNITY_EDITOR
-        if (_rb == null)
-            Debug.Log("Ball's rigidbody is null ");
-
-#endif
+        _rb = GetComponent<Rigidbody2D>(); //HACERLO MEJOR DIRECTAMENTE
     }
 
-
+    //Set the vel of a ball
     public void StartMoving(Vector3 pos) // StartMoving(pos, velocity)
     {
         float mod = Mathf.Sqrt(Mathf.Pow(pos.x - transform.position.x, 2) + Mathf.Pow(pos.y - transform.position.y, 2));
@@ -29,16 +23,16 @@ public class Ball : MonoBehaviour {
 
     }
 
+    //Go to a position, in this case sink/stacker position
     public void GoTo(Vector3 pos, System.Action<Ball> callback = null) { // GoTo(pos, float time, ...callback)
 
         float mod = Mathf.Sqrt(Mathf.Pow(pos.x - transform.position.x, 2) + Mathf.Pow(pos.y - transform.position.y, 2));
         _dir.x = (pos.x - transform.position.x) / mod;
 
         StartCoroutine(GoToCoroutine(pos, callback));
-
     }
 
-
+    //Coroutine to go to sink/stacker position, when the ball is in sink/stacker position, it is destroyed
     private IEnumerator GoToCoroutine(Vector3 pos, System.Action<Ball> callback = null) 
     {
         while (pos.x <= transform.position.x - 0.3f || pos.x >= transform.position.x + 0.3f)
@@ -52,7 +46,6 @@ public class Ball : MonoBehaviour {
                 callback(this);
             }
         }
-
         Destroy(gameObject);
     }
 
@@ -68,10 +61,10 @@ public class Ball : MonoBehaviour {
         _vel = _rb.velocity;
         _rb.velocity = new Vector2(0, 0);
     }
+
     // Change balls's velocity to it's last one
     public void Continue()
     {
        _rb.velocity = new Vector3(_vel.x,_vel.y);
     }
-
 }
