@@ -49,7 +49,15 @@ public class LevelManager : MonoBehaviour {
    //Init all variables, gameObjects, buttons and text
     void Awake()
     {
-        _nballs = 13;
+        string name = GameManager.gameManagerInstace.GetMapLevel().name;
+        string aux = "";
+        for (int i = 7; i < name.Length; i++)
+        {
+            aux += name[i];
+        }
+        int level;
+        Int32.TryParse(aux, out level);
+        _nballs = 10 + 15 * (uint)(level - 1);
         _spawn = true;
         _points = 0;
         _sameRoundPoints = 0;
@@ -192,7 +200,13 @@ public class LevelManager : MonoBehaviour {
     public void OnClickNextEndeMenu()
     {
         string name = GameManager.gameManagerInstace.GetMapLevel().name;
-        int level = name[name.Length - 1] - 48;
+        string aux = "";
+        for(int i = 7; i < name.Length; i++)
+        {
+            aux += name[i]; 
+        }
+        int level;
+        Int32.TryParse(aux, out level);
         TextAsset nextLevel = Resources.Load("Maps/mapdata" + (level + 1).ToString()) as TextAsset;
         GameManager.gameManagerInstace.SetMapLevel(nextLevel);
         SceneManager.LoadScene(1);
@@ -258,13 +272,27 @@ public class LevelManager : MonoBehaviour {
             _spawn = false;
             _endRound = true;
             string name = GameManager.gameManagerInstace.GetMapLevel().name;
-            int level = name[name.Length - 1] - 48;
+            string aux = "";
+            for (int i = 7; i < name.Length; i++)
+            {
+                aux += name[i];
+            }
+            int level;
+            Int32.TryParse(aux, out level);
             GameManager.gameManagerInstace.GetLevels()[level]._lock = false;
-            ///En funcion de los ptnos conseguidos
-            GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[0] = true;
-            GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[1] = true;
-            GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
-            ///
+
+            if (_points > gameField.GetTotalBlocks() * 20 / 4)
+            {
+                GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[0] = true;
+            }
+            if (_points > gameField.GetTotalBlocks() * 20 / 2)
+            {
+                GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[1] = true;
+            }
+            if (_points > gameField.GetTotalBlocks() * 20)
+            {
+                GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
+            }
             GameManager.Save();
             homeEnd.gameObject.SetActive(true);
             restartEnd.gameObject.SetActive(true);

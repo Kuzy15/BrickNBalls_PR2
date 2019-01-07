@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
             Load();
         }
     }
-
+    
     //Set map level
     public void SetMapLevel(TextAsset map)
     {

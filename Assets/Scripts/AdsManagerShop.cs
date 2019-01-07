@@ -5,6 +5,20 @@ using UnityEngine.Advertisements;
 
 public class AdsManagerShop : MonoBehaviour {
 
+    /*void Start()
+    {
+        StartCoroutine(ShowBannerWhenReady());
+    }
+
+    IEnumerator ShowBannerWhenReady()
+    {
+        while (!Advertisement.IsReady("banner"))
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        Advertisement.Banner.Show("banner");
+    }*/
+
     //Show and ad that you can´t skip
     public void ShowRewardedAd()
     {

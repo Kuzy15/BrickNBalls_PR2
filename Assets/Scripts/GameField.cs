@@ -27,6 +27,7 @@ public class GameField : MonoBehaviour
     private TextAsset _map; //To read the map
     private int _numBlocks; //bricks counter
     private int _rayCont; //rayBricks counter
+    private int _totalBlocks; //Total Blocks to calculate the stars with points
     private List<Pos> _freePos = new List<Pos>(); //Free positons of the board
 
     // Use this for initialization
@@ -38,6 +39,7 @@ public class GameField : MonoBehaviour
         mapReader.Reader(ref _listBlock);
         _numBlocks = 0;
         _rayCont = 0;
+        _totalBlocks = 0;
         _rayPowerUpText.text = GameManager.gameManagerInstace.GetComponent<GameManager>().GetNRayPowerUp().ToString();
 
         int x = (_listBlock.Count - 1) / 2;
@@ -57,6 +59,7 @@ public class GameField : MonoBehaviour
                     if (_listBlock[x] <= 6)
                     {
                         _numBlocks++;
+                        _totalBlocks++;
                         if(_listBlock[x] == 2)
                         {
                             aux.GetComponent<SolidBrick>().SetHits(_listBlock[x] * 2);
@@ -81,6 +84,10 @@ public class GameField : MonoBehaviour
         {
             for (int i = x; i >= 0; i--)
             {
+                if(_listBlock[i] > 0 && _listBlock[i] < 7)
+                {
+                    _totalBlocks++;
+                }
                 _extrafield.Add(_listBlock[i]);
             }
             for (int i = x; i >= 0; i--)
@@ -88,6 +95,12 @@ public class GameField : MonoBehaviour
                 _extrafield.Add(_listBlock[i + indexHits]);
             }
         }
+    }
+
+    //Get the total bricks/blocks
+    public int GetTotalBlocks()
+    {
+        return _totalBlocks;
     }
 
     //Move gameObject in 'logic' matrix (field) and in the secene
