@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour {
         }
         int level;
         Int32.TryParse(aux, out level);
-        _nballs = 20 + 10 * (uint)(level - 1);
+        _nballs = 10 + 10 * (uint)(level - 1);
         _spawn = true;
         _points = 0;
         _sameRoundPoints = 0;
