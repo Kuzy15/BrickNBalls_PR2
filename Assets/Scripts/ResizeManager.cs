@@ -10,7 +10,7 @@ public class ResizeManager : MonoBehaviour {
     public Canvas botCanvas;
 
 
-    float _gameFieldHeight = 14.0f;
+    float _gameFieldHeight = 14.0f * 1.5f;
 
     public void Resize()
     {

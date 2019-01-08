@@ -16,7 +16,7 @@ public class AimController : MonoBehaviour {
 #if UNITY_STANDALONE_WIN
             if (Input.GetMouseButtonDown(0))
             {
-                if (Input.mousePosition.y < 380 && Input.mousePosition.y > 60)
+                if (Input.mousePosition.y < 405 && Input.mousePosition.y > 60)
                 {
                     LevelManager.levelManagerInstance.SetSpawn(false);
                     ray = Camera.main.ScreenPointToRay(Input.mousePosition);

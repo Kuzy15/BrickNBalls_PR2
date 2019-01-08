@@ -49,6 +49,7 @@ public class LevelManager : MonoBehaviour {
    //Init all variables, gameObjects, buttons and text
     void Awake()
     {
+        //Calculate the numbre of balls for each level
         string name = GameManager.gameManagerInstace.GetMapLevel().name;
         string aux = "";
         for (int i = 7; i < name.Length; i++)
@@ -57,7 +58,7 @@ public class LevelManager : MonoBehaviour {
         }
         int level;
         Int32.TryParse(aux, out level);
-        _nballs = 10 + 15 * (uint)(level - 1);
+        _nballs = 20 + 10 * (uint)(level - 1);
         _spawn = true;
         _points = 0;
         _sameRoundPoints = 0;
@@ -279,24 +280,29 @@ public class LevelManager : MonoBehaviour {
             }
             int level;
             Int32.TryParse(aux, out level);
-            GameManager.gameManagerInstace.GetLevels()[level]._lock = false;
-
-            if (_points > gameField.GetTotalBlocks() * 20 / 4)
+            if (level < 9) //Only have 10 levels
+            {
+                GameManager.gameManagerInstace.GetLevels()[level]._lock = false;
+            }
+            if (_points > gameField.GetTotalBlocks() * 30 / 4)
             {
                 GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[0] = true;
             }
-            if (_points > gameField.GetTotalBlocks() * 20 / 2)
+            if (_points > gameField.GetTotalBlocks() * 30 / 2)
             {
                 GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[1] = true;
             }
-            if (_points > gameField.GetTotalBlocks() * 20)
+            if (_points > gameField.GetTotalBlocks() * 30)
             {
                 GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
             }
             GameManager.Save();
             homeEnd.gameObject.SetActive(true);
             restartEnd.gameObject.SetActive(true);
-            nextEnd.gameObject.SetActive(true);
+            if (level < 9)
+            {
+                nextEnd.gameObject.SetActive(true);
+            }
         }
     }
 

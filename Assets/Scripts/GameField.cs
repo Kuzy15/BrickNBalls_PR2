@@ -37,7 +37,7 @@ public class GameField : MonoBehaviour
         _map = GameManager.gameManagerInstace.GetMapLevel();
         MapReader mapReader = new MapReader(_map);
         mapReader.Reader(ref _listBlock);
-        _numBlocks = 0;
+        //_numBlocks = 0;
         _rayCont = 0;
         _totalBlocks = 0;
         _rayPowerUpText.text = GameManager.gameManagerInstace.GetComponent<GameManager>().GetNRayPowerUp().ToString();
@@ -58,7 +58,7 @@ public class GameField : MonoBehaviour
                     aux.GetComponent<Bricks>().SetTypeBrick(_listBlock[x]);
                     if (_listBlock[x] <= 6)
                     {
-                        _numBlocks++;
+                        //_numBlocks++;
                         _totalBlocks++;
                         if(_listBlock[x] == 2)
                         {
@@ -95,6 +95,12 @@ public class GameField : MonoBehaviour
                 _extrafield.Add(_listBlock[i + indexHits]);
             }
         }
+    }
+
+    //Amount of bricks in scene
+    private void Update()
+    {
+        _numBlocks  = GameObject.FindGameObjectsWithTag("Bricks").Length - 6;
     }
 
     //Get the total bricks/blocks
@@ -146,7 +152,7 @@ public class GameField : MonoBehaviour
                     aux.GetComponent<Bricks>().SetTypeBrick(_listBlock[x]);
                     if (_extrafield[x] <= 6)
                     {
-                        _numBlocks++;
+                        //_numBlocks++;
                         if (_listBlock[x] == 2)
                         {
                             aux.GetComponent<SolidBrick>().SetHits(_extrafield[x] * 2);
@@ -208,10 +214,10 @@ public class GameField : MonoBehaviour
     }
 
     //Subtract one brick from the counter
-    public void RemoveBlock()
+   /* public void RemoveBlock()
     {
         _numBlocks--;
-    }
+    }*/
 
     //Check if you destroy all bricks and there aren´t anymore on extrafield
     public bool WinGame() { 

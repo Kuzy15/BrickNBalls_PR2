@@ -30,7 +30,7 @@ public class SolidBrick : Bricks {
         {
             LevelManager.levelManagerInstance.AddSameRoundPoints();
             LevelManager.levelManagerInstance.AddPoints();
-            LevelManager.levelManagerInstance.gameField.RemoveBlock();
+            //LevelManager.levelManagerInstance.gameField.RemoveBlock();
             Destroy(gameObject);
         }
     }
