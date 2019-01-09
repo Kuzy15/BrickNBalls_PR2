@@ -52,4 +52,6 @@ public class ResizeManager : MonoBehaviour {
 
         Destroy(gameObject);
     }
+
+   
 }

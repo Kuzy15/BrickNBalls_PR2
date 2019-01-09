@@ -29,11 +29,13 @@ public class GameField : MonoBehaviour
     private int _rayCont; //rayBricks counter
     private int _totalBlocks; //Total Blocks to calculate the stars with points
     private List<Pos> _freePos = new List<Pos>(); //Free positons of the board
+    private LevelManager _levelManager;
 
     // Use this for initialization
     //Init all variables, maps, gameObjects, counters ...
-    void Start()
+    public void Init(LevelManager lm)
     {
+        _levelManager = lm;
         _map = GameManager.gameManagerInstace.GetMapLevel();
         MapReader mapReader = new MapReader(_map);
         mapReader.Reader(ref _listBlock);
@@ -54,6 +56,7 @@ public class GameField : MonoBehaviour
                 {
                     Vector3 pos = new Vector3(transform.position.x + j, transform.position.y - i - 1.5f, 0);
                     GameObject aux = Instantiate(_block[_listBlock[x] - 1], transform.position, transform.rotation, transform);
+                    aux.GetComponent<Bricks>().Init(_levelManager);
                     aux.transform.position = pos;
                     aux.GetComponent<Bricks>().SetTypeBrick(_listBlock[x]);
                     if (_listBlock[x] <= 6)
@@ -123,7 +126,7 @@ public class GameField : MonoBehaviour
             {
                 if (_field[i, j] != null)
                 {
-                    if (_field[i, j].gameObject.GetComponent<Bricks>().GetCanDestroy())
+                    if (_field[i, j].gameObject.GetComponent<Bricks>().GetCanDestroyNextRound())
                     {
                         Destroy(_field[i, j].gameObject);
                     }
@@ -148,6 +151,7 @@ public class GameField : MonoBehaviour
                 {
                     Vector3 pos = new Vector3(transform.position.x + i, transform.position.y - 1.5f, 0);
                     GameObject aux = Instantiate(_block[_extrafield[x] - 1], transform.position, transform.rotation, transform);
+                    aux.GetComponent<Bricks>().Init(_levelManager);
                     aux.transform.position = pos;
                     aux.GetComponent<Bricks>().SetTypeBrick(_listBlock[x]);
                     if (_extrafield[x] <= 6)
@@ -213,12 +217,6 @@ public class GameField : MonoBehaviour
         return active;
     }
 
-    //Subtract one brick from the counter
-   /* public void RemoveBlock()
-    {
-        _numBlocks--;
-    }*/
-
     //Check if you destroy all bricks and there aren´t anymore on extrafield
     public bool WinGame() { 
         if(_extrafield.Count == 0 && _numBlocks == 0)
@@ -227,6 +225,10 @@ public class GameField : MonoBehaviour
         }
         return false;
     }
+
+
+    // HACER: CAMBIAR ESTE METODO DE SITIO Y SEPARARLO EN:
+    // UN METODO EN ESTE SCRIPT QUE BUSQUE UNA POSICION LIBRE Y OTRO METODO QUE AL CLICKER EN EL BOTON DE RAY POWER UP NOS COLOQUE UN BRICK DE RAY EN UNA POS LIBRE.
 
     //If you have got ray powerup, see the free positions of the board and it creates two
     //rayBricks in a random free position
@@ -258,6 +260,7 @@ public class GameField : MonoBehaviour
 
                     Vector3 pos = new Vector3(transform.position.x + _freePos[rnd]._y, transform.position.y - _freePos[rnd]._x - 1.5f, 0);
                     GameObject aux = Instantiate(_block[6], transform.position, transform.rotation, transform);
+                    aux.GetComponent<Bricks>().Init(_levelManager);
                     aux.transform.position = pos;
                     aux.GetComponent<Bricks>().SetTypeBrick(7);
                     _field[_freePos[rnd]._x, _freePos[rnd]._y] = aux;

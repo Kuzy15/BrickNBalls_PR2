@@ -8,7 +8,7 @@ public class DeathZone : MonoBehaviour {
 
     private LevelManager _levelManager;
 
-    //Get LevelManager
+    //Initialize LevelManager
     public void Init(LevelManager levelManager) //MEJOR HACERLO DIRECTAMENTE?¿
     {
         _levelManager = levelManager;

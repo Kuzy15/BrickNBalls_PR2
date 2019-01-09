@@ -7,8 +7,13 @@ public class Bricks : MonoBehaviour {
 
     protected int _nHits; //Number of hits
     protected int _type; //Type of brick
-    protected bool _canDestroy; //Can destroy (used for raybricks, maybe could be used for other bricks)
+    protected bool _nextRoundDestroy; // Used for destroy a brick in the next round (used for raybricks...)
+    protected LevelManager _levelManager;
 
+    public void Init(LevelManager lm)
+    {
+        _levelManager = lm;
+    }
     //Set number of hits
     public void SetHits(int n)
     {
@@ -33,14 +38,14 @@ public class Bricks : MonoBehaviour {
     }
 
     //Set can destroy
-    public void SetCanDestroy(bool d)
+    public void SetCanDestroyNextRound(bool d)
     {
-        _canDestroy = d;
+        _nextRoundDestroy = d;
     }
 
     //Get can destroy
-    public bool GetCanDestroy()
+    public bool GetCanDestroyNextRound()
     {
-        return _canDestroy;
+        return _nextRoundDestroy;
     }
 }

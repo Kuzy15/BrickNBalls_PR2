@@ -11,6 +11,8 @@ public class LevelManager : MonoBehaviour {
     public BallStacker ballStacker;
     public DeathZone deathZone;
     public GameField gameField; // BoardManager
+    public UIManager uiManager;
+    public AimController aimController;
     
     // public AimController _aimController;
 
@@ -59,15 +61,20 @@ public class LevelManager : MonoBehaviour {
         int level;
         Int32.TryParse(aux, out level);
         _nballs = 10 + 10 * (uint)(level - 1);
+
         _spawn = true;
         _points = 0;
         _sameRoundPoints = 0;
         _firstBall = true;
 
+        gameField.Init(this);
         deathZone.Init(this);
-        ballSpawner.Init(ballPrefab, _nballs);
+        ballSpawner.Init(ballPrefab, _nballs, this);
         ballStacker.Init();
-        levelManagerInstance = this;
+        uiManager.Init();
+        aimController.Init(this);
+
+        //levelManagerInstance = this;
 
         resizeManager.GetComponent<ResizeManager>().Resize();
 
@@ -154,14 +161,14 @@ public class LevelManager : MonoBehaviour {
         _pausedObjects = GameObject.FindGameObjectsWithTag("Ball"); // HACER: CAMBIAR ESTO, NO ES BUENO BUSCAR CON TAG
         for(int i =0; i < _pausedObjects.Length; i++)
         {
-            _pausedObjects[i].GetComponent<Ball>().Pause();
+            if(_pausedObjects[i] != null) // If doesn't get destroyed in the moment the game is paused
+                 _pausedObjects[i].GetComponent<Ball>().Pause();
         }
-        pause.gameObject.SetActive(false);
-        home.gameObject.SetActive(true);
-        restart.gameObject.SetActive(true);
-        play.gameObject.SetActive(true);
+       
         _spawn = false;
         _paused = true;
+
+        uiManager.Pause();
     }
 
     //Continue method
@@ -172,12 +179,11 @@ public class LevelManager : MonoBehaviour {
         {
             _pausedObjects[i].GetComponent<Ball>().Continue();
         }
-        pause.gameObject.SetActive(true);
-        home.gameObject.SetActive(false);
-        restart.gameObject.SetActive(false);
-        play.gameObject.SetActive(false);
+       
         _spawn = true;
         _paused = false;
+
+        uiManager.Play();
 
     }
 
@@ -202,15 +208,19 @@ public class LevelManager : MonoBehaviour {
     {
         string name = GameManager.gameManagerInstace.GetMapLevel().name;
         string aux = "";
-        for(int i = 7; i < name.Length; i++)
+        for (int i = 7; i < name.Length; i++)
         {
-            aux += name[i]; 
+            aux += name[i];
         }
         int level;
         Int32.TryParse(aux, out level);
-        TextAsset nextLevel = Resources.Load("Maps/mapdata" + (level + 1).ToString()) as TextAsset;
-        GameManager.gameManagerInstace.SetMapLevel(nextLevel);
-        SceneManager.LoadScene(1);
+
+        if (level < 9)
+        {
+            TextAsset nextLevel = Resources.Load("Maps/mapdata" + (level + 1).ToString()) as TextAsset;
+            GameManager.gameManagerInstace.SetMapLevel(nextLevel);
+            SceneManager.LoadScene(1);
+        }
     }
 
     //Win Restart method
@@ -263,58 +273,49 @@ public class LevelManager : MonoBehaviour {
         warnings.SetActive(gameField.ActiveWarnings());
     }
 
-    //If you destroy all blocks, you can´t spawn, you end this round(map), unlocknext map
+    //If you destroy all blocks, you can´t spawn, you end this round(map), unlock next map
     //Set a number of star in function of points and show stars in select level scene
     //Show end buttons and save the game
-    public void EndButtonsActive()
+    public void LevelCompleted()
     {
-        if (gameField.WinGame())
+        _spawn = false;
+        _endRound = true;
+        string name = GameManager.gameManagerInstace.GetMapLevel().name;
+        string aux = "";
+        for (int i = 7; i < name.Length; i++)
         {
-            _spawn = false;
-            _endRound = true;
-            string name = GameManager.gameManagerInstace.GetMapLevel().name;
-            string aux = "";
-            for (int i = 7; i < name.Length; i++)
-            {
-                aux += name[i];
-            }
-            int level;
-            Int32.TryParse(aux, out level);
-            if (level < 9) //Only have 10 levels
-            {
-                GameManager.gameManagerInstace.GetLevels()[level]._lock = false;
-            }
-            if (_points > gameField.GetTotalBlocks() * 30 / 4)
-            {
-                GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[0] = true;
-            }
-            if (_points > gameField.GetTotalBlocks() * 30 / 2)
-            {
-                GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[1] = true;
-            }
-            if (_points > gameField.GetTotalBlocks() * 30)
-            {
-                GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
-            }
-            GameManager.Save();
-            homeEnd.gameObject.SetActive(true);
-            restartEnd.gameObject.SetActive(true);
-            if (level < 9)
-            {
-                nextEnd.gameObject.SetActive(true);
-            }
+            aux += name[i];
         }
+        int level;
+        Int32.TryParse(aux, out level);
+
+        if (level < 9) //Only have 10 levels
+        {
+            GameManager.gameManagerInstace.GetLevels()[level]._lock = false;
+        }
+        if (_points > gameField.GetTotalBlocks() * 30 / 4)
+        {
+            GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[0] = true;
+        }
+        if (_points > gameField.GetTotalBlocks() * 30 / 2)
+        {
+            GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[1] = true;
+        }
+        if (_points > gameField.GetTotalBlocks() * 30)
+        {
+            GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
+        }
+        GameManager.Save();
+
+        uiManager.WinLevel();
+
     }
 
     //If you lose this round(map), you can´t spawn and show lose buttons
-    public void LoseButtonsActive()
-    {
-        if (gameField.EndGame())
-        {
+    public void LevelLost()
+    {     
             _spawn = false;
-            homeLose.gameObject.SetActive(true);
-            restartLose.gameObject.SetActive(true);
-        }
+            uiManager.LoseLevel();      
     }
 
     // Check the state of the game after making a play
@@ -338,11 +339,19 @@ public class LevelManager : MonoBehaviour {
               SetSpawn(true);
             }
 
-
             MoveBlocks(); //Move gameField blocks
             ActiveWarnings(); //Active warnings if is necessary
-            EndButtonsActive(); //Active Win/End buttons if is necessary
-            LoseButtonsActive(); //Active Lose buttons if is necessary
+
+            if (gameField.WinGame())
+            {
+                LevelCompleted(); 
+            }
+            else if (gameField.EndGame())
+            {
+                LevelLost();
+            }
+
+               
         }
 
     }

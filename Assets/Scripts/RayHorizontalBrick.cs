@@ -6,7 +6,7 @@ public class RayHorizontalBrick : Bricks {
 
     private void Start() //Set if you can destroy
     {
-        _canDestroy = false;
+        _nextRoundDestroy = false;
     }
 
     //If it collides with the deathZone destoy it
@@ -20,7 +20,7 @@ public class RayHorizontalBrick : Bricks {
         }
         else
         {
-            _canDestroy = true;
+            _nextRoundDestroy = true;
             Vector3 newPos = new Vector3(0, gameObject.transform.position.y, -1);
             gameObject.transform.GetChild(0).gameObject.transform.position = newPos;
             gameObject.transform.GetChild(0).gameObject.SetActive(true);

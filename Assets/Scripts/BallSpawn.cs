@@ -7,12 +7,14 @@ public class BallSpawn : MonoBehaviour {
     private Ball _ball;
     private uint _nBalls;
     private Vector3 _posDest;
+    private LevelManager _levelManger;
 
     //Init variables
-    public void Init(Ball ballPrefab, uint nBalls) {
+    public void Init(Ball ballPrefab, uint nBalls, LevelManager lm) {
 
         _ball = ballPrefab;
         _nBalls = nBalls;
+        _levelManger = lm;
     }
 
     //Start spawn coroutine
@@ -28,7 +30,7 @@ public class BallSpawn : MonoBehaviour {
         while(_nBalls > 0)
         {
                 yield return new WaitForFixedUpdate();
-            if (!LevelManager.levelManagerInstance.GetPaused())
+            if (!_levelManger.GetPaused())
             {
                 wait++;
                 if (wait > 3)

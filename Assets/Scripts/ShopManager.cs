@@ -33,9 +33,17 @@ public class ShopManager : MonoBehaviour {
     //Subtract 25 rubies and add 1 power up, show rubies´ amount and save the game
     public void OnClickBuyRayPowerUp()
     {
-        GameManager.gameManagerInstace.RemoveRuby(25); ;
-        GameManager.gameManagerInstace.AddNRayPowerUp(1);
-        rubyText.text = GameManager.gameManagerInstace.GetRuby().ToString();
-        GameManager.Save();
+        if (GameManager.gameManagerInstace.GetRuby() >= 25)
+        {
+            GameManager.gameManagerInstace.RemoveRuby(25); ;
+            GameManager.gameManagerInstace.AddNRayPowerUp(1);
+            rubyText.text = GameManager.gameManagerInstace.GetRuby().ToString();
+            GameManager.Save();
+        }
+
+#if UNITY_EDITOR
+        else
+            Debug.Log("You don't have enough rubies");
+#endif
     }   
 }

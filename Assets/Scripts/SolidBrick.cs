@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class SolidBrick : Bricks {
 
+    
 
     void Start() //Show the block´s hits number and set if you can destroy
     {
         GetComponentInChildren<TextMesh>().text = _nHits.ToString();
-        _canDestroy = false;
+        _nextRoundDestroy = false;
+        
     }
 
   //if you colision with the deathZone destory the gameObject, if you colision with
@@ -28,8 +30,8 @@ public class SolidBrick : Bricks {
         GetComponentInChildren<TextMesh>().text = _nHits.ToString();
         if (_nHits <= 0)
         {
-            LevelManager.levelManagerInstance.AddSameRoundPoints();
-            LevelManager.levelManagerInstance.AddPoints();
+           _levelManager.AddSameRoundPoints();
+           _levelManager.AddPoints();
             //LevelManager.levelManagerInstance.gameField.RemoveBlock();
             Destroy(gameObject);
         }

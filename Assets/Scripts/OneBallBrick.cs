@@ -6,7 +6,7 @@ public class OneBallBrick : Bricks {
 
     private void Start() //Set if you can destroy
     {
-        _canDestroy = false;
+        _nextRoundDestroy = false;
     }
 
     //If it collides with the deathZone destoy it
@@ -20,8 +20,8 @@ public class OneBallBrick : Bricks {
         }
         else
         {
-            LevelManager.levelManagerInstance.AddBall();
-            LevelManager.levelManagerInstance.ballStacker.AddBall();
+            _levelManager.AddBall();
+            _levelManager.ballStacker.AddBall();
             Destroy(gameObject);
         }
     }
