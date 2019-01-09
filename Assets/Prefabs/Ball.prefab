@@ -19,22 +19,23 @@ Prefab:
       propertyPath: m_Radius
       value: 0.1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
+  m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1331615699605050}
-  m_IsPrefabAsset: 0
+  m_IsPrefabParent: 0
 --- !u!1 &1331615699605050
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
+  serializedVersion: 5
   m_Component:
   - component: {fileID: 4982062784784060}
   - component: {fileID: 212629204321130500}
   - component: {fileID: 58018057158124530}
   - component: {fileID: 50433643710047594}
-  - component: {fileID: 114352051910570608}
+  - component: {fileID: 114752743595175270}
   m_Layer: 8
   m_Name: Ball
   m_TagString: Ball
@@ -45,7 +46,7 @@ GameObject:
 --- !u!4 &4982062784784060
 Transform:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331615699605050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -59,7 +60,7 @@ Transform:
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331615699605050}
   m_BodyType: 0
@@ -78,7 +79,7 @@ Rigidbody2D:
 --- !u!58 &58018057158124530
 CircleCollider2D:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331615699605050}
   m_Enabled: 1
@@ -90,21 +91,21 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.1
---- !u!114 &114352051910570608
+--- !u!114 &114752743595175270
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331615699605050}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c20726802f4e28b40a537a94a215d80a, type: 3}
+  m_Script: {fileID: 11500000, guid: 44d9668cb37bf874999b052e0af7f0ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212629204321130500
 SpriteRenderer:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331615699605050}
   m_Enabled: 1
@@ -114,7 +115,6 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
@@ -146,4 +146,3 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
