@@ -1150,6 +1150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e5f82957635e2468b7ccb4a7790a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rubyText: {fileID: 78587269}
 --- !u!1 &1537055306
 GameObject:
   m_ObjectHideFlags: 0

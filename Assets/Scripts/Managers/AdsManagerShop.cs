@@ -1,23 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Advertisements;
 
 public class AdsManagerShop : MonoBehaviour {
 
-    /*void Start()
-    {
-        StartCoroutine(ShowBannerWhenReady());
-    }
-
-    IEnumerator ShowBannerWhenReady()
-    {
-        while (!Advertisement.IsReady("banner"))
-        {
-            yield return new WaitForSeconds(0.5f);
-        }
-        Advertisement.Banner.Show("banner");
-    }*/
+    public Text rubyText;
 
     //Show and ad that you can´t skip
     public void ShowRewardedAd()
@@ -29,15 +18,6 @@ public class AdsManagerShop : MonoBehaviour {
         }
     }
 
-    //Show and ad that you can skip
-    public void ShowAd()
-    {
-        if (Advertisement.IsReady("video"))
-        {
-            ShowOptions options = new ShowOptions { resultCallback = HandleShowResult };
-            Advertisement.Show("video", options);
-        }
-    }
 
     //If you finish the ad you get some rubies, else nothing
     private void HandleShowResult(ShowResult result)
@@ -47,6 +27,8 @@ public class AdsManagerShop : MonoBehaviour {
             case ShowResult.Finished:
                 //Debug.Log("The ad was successfully shown.");
                 GameManager.gameManagerInstace.AddRuby(30);
+                rubyText.text = GameManager.gameManagerInstace.GetRuby().ToString(); //Show the amount of rubies
+                SaveAndLoad.Save();
                 break;
             case ShowResult.Skipped:
                 //Debug.Log("The ad was skipped before reaching the end.");

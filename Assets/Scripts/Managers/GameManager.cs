@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -64,6 +65,20 @@ public class GameManager : MonoBehaviour
     public TextAsset GetMapLevel()
     {
         return _currentMapLevel; 
+    }
+
+    //Return the current level(int)
+    public int GetCurrentLevel()
+    {
+        string name = _currentMapLevel.name;
+        string aux = "";
+        for (int i = 7; i < name.Length; i++)
+        {
+            aux += name[i];
+        }
+        int level;
+        Int32.TryParse(aux, out level);
+        return level;
     }
 
     //Get info of levels (stars and lock)

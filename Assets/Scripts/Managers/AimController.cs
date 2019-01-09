@@ -20,7 +20,7 @@ public class AimController : MonoBehaviour {
     void FixedUpdate () {
         if (_levelManager.GetSpawn())
         {
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR
             if (Input.GetMouseButtonDown(0))
             {
                 if (Input.mousePosition.y < 405 && Input.mousePosition.y > 60)
@@ -38,7 +38,7 @@ public class AimController : MonoBehaviour {
                 }
             }
 #endif
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             if (Input.touchCount > 0)
             {
                 if (Input.GetTouch(0).position.y > 250 && Input.GetTouch(0).position.y < 1700)

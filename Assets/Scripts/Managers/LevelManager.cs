@@ -13,26 +13,18 @@ public class LevelManager : MonoBehaviour {
     public GameField gameField; // BoardManager
     public UIManager uiManager;
     public AimController aimController;
+    public AdsManagerGame adsManagerGame;
     
     public Ball ballPrefab;
 
     public GameObject resizeManager;
 
     public Text scoreText;
-
-    //Button fos the Game Scene
-    public Button pause;
-    public Button home;
-    public Button restart;
-    public Button play;
-    public Button homeEnd;
-    public Button restartEnd;
-    public Button nextEnd;
-    public Button homeLose;
-    public Button restartLose;
+    public Text endScoreText;
 
     public GameObject warnings;
 
+    public Button adsButton;
 
     private uint _nballs; //Number of balls in game
     private bool _spawn; //If you can spawn balls or not
@@ -44,21 +36,11 @@ public class LevelManager : MonoBehaviour {
 
     private GameObject[] _pausedObjects; //To all balls in game
 
-    public static LevelManager levelManagerInstance;
-
    //Init all variables, gameObjects, buttons and text
     void Awake()
     {
         //Calculate the numbre of balls for each level
-        string name = GameManager.gameManagerInstace.GetMapLevel().name;
-        string aux = "";
-        for (int i = 7; i < name.Length; i++)
-        {
-            aux += name[i];
-        }
-        int level;
-        Int32.TryParse(aux, out level);
-        _nballs = 10 + 10 * (uint)(level - 1);
+        _nballs = 10 + 10 * (uint)(GameManager.gameManagerInstace.GetCurrentLevel() - 1);
 
         _spawn = true;
         _points = 0;
@@ -71,22 +53,12 @@ public class LevelManager : MonoBehaviour {
         ballSpawner.Init(ballPrefab, _nballs, this);
         ballStacker.Init();
         uiManager.Init();
+        adsManagerGame.Init(this);
 
-        levelManagerInstance = this;
 
         resizeManager.GetComponent<ResizeManager>().Resize();
 
         scoreText.GetComponent<Text>().text = "Points: " + _points.ToString();
-
-        pause.gameObject.SetActive(true);
-        home.gameObject.SetActive(false);
-        restart.gameObject.SetActive(false);
-        play.gameObject.SetActive(false);
-        homeEnd.gameObject.SetActive(false);
-        restartEnd.gameObject.SetActive(false);
-        nextEnd.gameObject.SetActive(false);
-        restartLose.gameObject.SetActive(false);
-        homeLose.gameObject.SetActive(false);
 
         _paused = false;
         _endRound = false;
@@ -129,6 +101,18 @@ public class LevelManager : MonoBehaviour {
     {
         _points += (10 * _sameRoundPoints);
         scoreText.GetComponent<Text>().text = "Points: " + _points.ToString();
+    }
+
+    //Get the points
+    public int GetPoints()
+    {
+        return _points;
+    }
+
+    //Set the points
+    public void SetPoints(int  p)
+    {
+        _points = p; ;
     }
 
     //Add one to the multiplier of the bricks destroyed in the same round
@@ -204,14 +188,7 @@ public class LevelManager : MonoBehaviour {
     //Load the same secene but with dif map
     public void OnClickNextEndeMenu()
     {
-        string name = GameManager.gameManagerInstace.GetMapLevel().name;
-        string aux = "";
-        for (int i = 7; i < name.Length; i++)
-        {
-            aux += name[i];
-        }
-        int level;
-        Int32.TryParse(aux, out level);
+        int level = GameManager.gameManagerInstace.GetCurrentLevel();
 
         if (level < 9)
         {
@@ -235,7 +212,14 @@ public class LevelManager : MonoBehaviour {
         SceneManager.LoadScene(0);
     }
 
- 
+    //
+    public void OnClickAdsPoints()
+    {
+        adsManagerGame.ShowAd();
+        adsButton.interactable = false;
+    }
+
+
     /*
      * A ball has came into the death zone, check if it's the first and 
      * change the ball stacker position to this first ball position.
@@ -276,21 +260,14 @@ public class LevelManager : MonoBehaviour {
     //Show end buttons and save the game
     public void LevelCompleted()
     {
-        _spawn = false;
-        _endRound = true;
-        string name = GameManager.gameManagerInstace.GetMapLevel().name;
-        string aux = "";
-        for (int i = 7; i < name.Length; i++)
-        {
-            aux += name[i];
-        }
-        int level;
-        Int32.TryParse(aux, out level);
+        
+        int level = GameManager.gameManagerInstace.GetCurrentLevel();
 
         if (level < 9) //Only have 10 levels
         {
             GameManager.gameManagerInstace.GetLevels()[level]._lock = false;
         }
+
         if (_points > gameField.GetTotalBlocks() * 30 / 4)
         {
             GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[0] = true;
@@ -303,8 +280,9 @@ public class LevelManager : MonoBehaviour {
         {
             GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
         }
-        SaveAndLoad.Save();
+        endScoreText.text = "Point in this level " + _points.ToString();
 
+        SaveAndLoad.Save();
         uiManager.WinLevel();
 
     }

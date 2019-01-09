@@ -25,9 +25,6 @@ public class ShopManager : MonoBehaviour {
     public void OnClickAdRubyReward()
     {
         adsManager.GetComponent<AdsManagerShop>().ShowRewardedAd();
-        GameManager.gameManagerInstace.AddRuby(30);
-        rubyText.text = GameManager.gameManagerInstace.GetRuby().ToString();
-        SaveAndLoad.Save();
     }
 
     //Subtract 25 rubies and add 1 power up, show rubies´ amount and save the game
