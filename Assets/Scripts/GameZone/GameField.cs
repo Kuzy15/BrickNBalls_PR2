@@ -120,9 +120,9 @@ public class GameField : MonoBehaviour
     {
         int x = (_extrafield.Count - 1) / 2;
         int indexHits = (_extrafield.Count - 1) / 2 + 1;
-        for (int i = 13; i >= 0; i--)
-        {
             for (int j = 10; j >= 0; j--)
+        {
+        for (int i = 13; i >= 0; i--)
             {
                 if (_field[i, j] != null)
                 {
@@ -134,9 +134,17 @@ public class GameField : MonoBehaviour
                     {
                         Vector3 newPos = new Vector3(_field[i, j].gameObject.transform.position.x, (_field[i, j].gameObject.transform.position.y - 1), _field[i, j].gameObject.transform.position.z);
                         _field[i, j].gameObject.transform.position = newPos;
-                        GameObject aux = _field[i, j];
-                        _field[i, j] = null;
-                        _field[i + 1, j] = aux;
+                       /* if (!_field[i, j].GetComponent<Bricks>().Move())
+                        {
+                            j--;
+                            i = 13;
+                        }
+                        else
+                        {*/
+                            GameObject aux = _field[i, j];
+                            _field[i, j] = null;
+                            _field[i + 1, j] = aux;
+                       // }
                     }
                 }
             }
