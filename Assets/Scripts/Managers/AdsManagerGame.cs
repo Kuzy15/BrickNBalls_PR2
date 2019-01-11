@@ -10,14 +10,27 @@ public class AdsManagerGame : MonoBehaviour
     public Text endScoreText;
     private LevelManager _levelManager;
 
+    private void Awake()
+    {
+        if (!Advertisement.isInitialized)
+        {
+            Advertisement.Initialize("2988623", true);
+        }
+    }
+
     public void Init(LevelManager lm)
     {
         _levelManager = lm;
     }
 
-    void ShowBanner()
+    public void ShowBanner()
     {
         StartCoroutine(ShowBannerCoroutine());
+    }
+
+    public void HideBanner()
+    {
+        Advertisement.Banner.Hide(true);
     }
 
     IEnumerator ShowBannerCoroutine()
@@ -26,17 +39,23 @@ public class AdsManagerGame : MonoBehaviour
         {
             yield return new WaitForSeconds(0.5f);
         }
-        //Advertisement.Banner.Show("banner");
+        Advertisement.Banner.Show("banner");
     }
 
     //Show and ad that you can skip
     public void ShowAd()
     {
-        if (Advertisement.IsReady("video"))
+        StartCoroutine(ShowAdCoroutine());
+    }
+
+    IEnumerator ShowAdCoroutine()
+    {
+        while (!Advertisement.IsReady("video"))
         {
-            ShowOptions options = new ShowOptions { resultCallback = HandleShowResult };
-            Advertisement.Show("video", options);
+            yield return new WaitForSeconds(0.5f);
         }
+        ShowOptions options = new ShowOptions { resultCallback = HandleShowResult };
+        Advertisement.Show("video", options);
     }
 
     //If you finish the ad you get some rubies, else nothing

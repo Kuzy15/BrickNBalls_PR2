@@ -9,8 +9,6 @@ public class SolidBrick : Bricks {
     void Start() //Show the block´s hits number and set other vars.
     {
         GetComponentInChildren<TextMesh>().text = _nHits.ToString();
-        _nextRoundDestroy = false;
-        
     }
 
   //if you colision with the deathZone destory the gameObject, if you colision with

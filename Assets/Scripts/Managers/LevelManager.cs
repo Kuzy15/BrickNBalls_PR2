@@ -14,15 +14,18 @@ public class LevelManager : MonoBehaviour {
     public UIManager uiManager;
     public AimController aimController;
     public AdsManagerGame adsManagerGame;
+    public ResizeManager resizeManager;
     
     public Ball ballPrefab;
 
-    public GameObject resizeManager;
 
     public Text scoreText;
     public Text endScoreText;
 
     public GameObject warnings;
+
+    public Button rayPowerUpButton;
+    public Button fallBallsButton;
 
     public Button adsButton;
 
@@ -32,7 +35,7 @@ public class LevelManager : MonoBehaviour {
     private int _sameRoundPoints; //Points multiplier used when you destory several bricks in a row
     private bool _paused; //If game is paused or not
     private bool _endRound; //If you end this round
-    private bool _firstBall; //If is the first ball that collides with deathZone 
+    private bool _firstBall; //If is the first ball that collides with deathZone
 
     private GameObject[] _pausedObjects; //To all balls in game
 
@@ -47,16 +50,18 @@ public class LevelManager : MonoBehaviour {
         _sameRoundPoints = 0;
         _firstBall = true;
 
-        aimController.Init(this);
         gameField.Init(this);
         deathZone.Init(this);
         ballSpawner.Init(ballPrefab, _nballs, this);
         ballStacker.Init();
         uiManager.Init();
         adsManagerGame.Init(this);
+        resizeManager.Init(this);
+        resizeManager.Resize();
+
+        aimController.Init(this, resizeManager.GetTopStop(), resizeManager.GetBotStop());
 
 
-        resizeManager.GetComponent<ResizeManager>().Resize();
 
         scoreText.GetComponent<Text>().text = "Points: " + _points.ToString();
 
@@ -151,6 +156,7 @@ public class LevelManager : MonoBehaviour {
         _paused = true;
 
         uiManager.Pause();
+        adsManagerGame.ShowBanner();
     }
 
     //Continue method
@@ -166,7 +172,7 @@ public class LevelManager : MonoBehaviour {
         _paused = false;
 
         uiManager.Play();
-
+        adsManagerGame.HideBanner();
     }
 
     //Paused Restart method
@@ -174,6 +180,7 @@ public class LevelManager : MonoBehaviour {
     public void OnClickRestartMenu()
     {
         SceneManager.LoadScene(1);
+        adsManagerGame.HideBanner();
     }
 
     //Paused Home method
@@ -181,6 +188,7 @@ public class LevelManager : MonoBehaviour {
     public void OnClickHomeMenu()
     {
         SceneManager.LoadScene(0);
+        adsManagerGame.HideBanner();
     }
 
     //Win Next Level method
@@ -218,6 +226,52 @@ public class LevelManager : MonoBehaviour {
         adsManagerGame.ShowAd();
         adsButton.interactable = false;
     }
+
+    //
+    public void OnClickRayPowerUp()
+    {
+        gameField.CreateRayPowerUp();
+    }
+
+    //
+    public void OnClickFallBalls()
+    {
+        ballSpawner.StopSpawnBalls();
+        GameObject[] _inGameBalls = GameObject.FindGameObjectsWithTag("Ball");
+        for (int i = 0; i < _inGameBalls.Length; i++)
+        {
+            Destroy(_inGameBalls[i]);
+        }
+        if (ballSpawner.transform.position != ballStacker.transform.position)
+        {
+            ballSpawner.MoveTo(ballStacker.transform.position); // Spawn position is the ball stacker last position
+        }
+        _spawn = true;
+        rayPowerUpButton.gameObject.SetActive(true);
+        fallBallsButton.gameObject.SetActive(false);
+        ballSpawner.Show(true);
+        ballSpawner.SetNBalls(_nballs); // Update the number of balls, it could have changed
+
+        ResetSameRoundPoints();
+
+        ballStacker.ResetNumBalls(); //Restart number of stacked balls    
+        ballStacker.Show(false);
+
+        _firstBall = true;
+
+        MoveBlocks(); //Move gameField blocks
+        ActiveWarnings(); //Active warnings if is necessary
+
+        if (gameField.WinGame())
+        {
+            LevelCompleted();
+        }
+        else if (gameField.EndGame())
+        {
+            LevelLost();
+        }
+    }
+
 
 
     /*
@@ -300,6 +354,8 @@ public class LevelManager : MonoBehaviour {
         ballStacker.AddBall(); // Add one ball to the balls counter
         if (ballStacker.GetBallStacked() == _nballs) // All balls has been stacked
         {
+            rayPowerUpButton.gameObject.SetActive(true);
+            fallBallsButton.gameObject.SetActive(false);
             ballSpawner.MoveTo(ballStacker.transform.position); // Spawn position is the ball stacker last position
             ballSpawner.Show(true); 
             ballSpawner.SetNBalls(_nballs); // Update the number of balls, it could have changed
@@ -307,6 +363,7 @@ public class LevelManager : MonoBehaviour {
             ResetSameRoundPoints();
 
             ballStacker.ResetNumBalls(); //Restart number of stacked balls    
+            ballStacker.Show(false);
             
             _firstBall = true;
 

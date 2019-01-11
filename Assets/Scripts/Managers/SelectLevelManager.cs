@@ -22,7 +22,9 @@ public class SelectLevelManager : MonoBehaviour {
         {
             maps[i] = Resources.Load("Maps/mapdata" + (i + 1).ToString()) as TextAsset;
         }
+
         //Set to each button its LoadLevel method with its map
+#region Listener Buttons
         buttonLevels[0].onClick.AddListener(delegate { LoadLevel(maps[0], 0); });
         buttonLevels[1].onClick.AddListener(delegate { LoadLevel(maps[1], 1); });
         buttonLevels[2].onClick.AddListener(delegate { LoadLevel(maps[2], 2); });
@@ -33,9 +35,9 @@ public class SelectLevelManager : MonoBehaviour {
         buttonLevels[7].onClick.AddListener(delegate { LoadLevel(maps[7], 7); });
         buttonLevels[8].onClick.AddListener(delegate { LoadLevel(maps[8], 8); });
         buttonLevels[9].onClick.AddListener(delegate { LoadLevel(maps[9], 9); });
-        
+#endregion   
         //Show each level´s stars and if the level is locked or not
-        for(int i = 0; i < GameManager.gameManagerInstace.GetLevels().Length; i++)
+        for (int i = 0; i < GameManager.gameManagerInstace.GetLevels().Length; i++)
         {
             buttonLevels[i].transform.GetChild(1).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._stars[0]);
             buttonLevels[i].transform.GetChild(2).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._stars[1]);

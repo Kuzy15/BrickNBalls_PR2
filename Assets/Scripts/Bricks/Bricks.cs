@@ -2,19 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bricks : MonoBehaviour {
+public class Bricks : MonoBehaviour
+{
 
 
     protected int _nHits; //Number of hits
     protected int _type; //Type of brick
     protected bool _nextRoundDestroy; // Used for destroy a brick in the next round (used for raybricks...)
-    //More vars for future bricks
-    
+    protected bool _canFall;                                 //More vars for future bricks
+
     protected LevelManager _levelManager;
 
-    public void Init(LevelManager lm)
+    public void Init(LevelManager lm, int t, int nHits)
     {
         _levelManager = lm;
+        _type = t;
+
+        _nHits = nHits;
+        if (_type == 2)
+            _nHits = nHits * 2;
+
+
+        _nextRoundDestroy = false;
+        _canFall = true;
     }
     //Set number of hits
     public void SetHits(int n)
@@ -39,15 +49,17 @@ public class Bricks : MonoBehaviour {
         return _type;
     }
 
-    //Set can destroy
-    public void SetCanDestroyNextRound(bool d)
+    // Fall one position
+    public virtual void Fall()
     {
-        _nextRoundDestroy = d;
+            Vector3 newPos = new Vector3(gameObject.transform.position.x, (gameObject.transform.position.y - 1), gameObject.transform.position.z);
+            gameObject.transform.position = newPos;
+            
+       
     }
 
-    //Get can destroy
-    public bool GetCanDestroyNextRound()
+    public bool canFall()
     {
-        return _nextRoundDestroy;
+        return _canFall;
     }
 }

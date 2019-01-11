@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Advertisements;
 
 
 //Struct Levels which contains the stars and the lock of each level
@@ -52,6 +53,11 @@ public class GameManager : MonoBehaviour
             _ruby = 100;
             _nRayPowerUp = 2;
             SaveAndLoad.Load();
+        }
+
+        if (!Advertisement.isInitialized)
+        {
+            Advertisement.Initialize("2988623", true);
         }
     }
 

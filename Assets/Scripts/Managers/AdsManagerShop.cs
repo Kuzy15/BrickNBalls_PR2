@@ -8,14 +8,29 @@ public class AdsManagerShop : MonoBehaviour {
 
     public Text rubyText;
 
+    private void Awake()
+    {
+        if (!Advertisement.isInitialized)
+        {
+            Advertisement.Initialize("2988623", true);
+        }
+    }
+
     //Show and ad that you can´t skip
     public void ShowRewardedAd()
     {
-        if (Advertisement.IsReady("rewardedVideo"))
+        StartCoroutine(ShowRewardedAdCoroutine());
+    }
+
+    IEnumerator ShowRewardedAdCoroutine()
+    {
+        while (!Advertisement.IsReady("rewardedVideo"))
         {
-            ShowOptions options = new ShowOptions { resultCallback = HandleShowResult };
-            Advertisement.Show("rewardedVideo", options);
+            yield return new WaitForSeconds(0.5f);
+
         }
+        ShowOptions options = new ShowOptions { resultCallback = HandleShowResult };
+        Advertisement.Show("rewardedVideo", options);
     }
 
 

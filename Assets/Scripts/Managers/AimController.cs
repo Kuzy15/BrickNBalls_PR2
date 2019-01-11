@@ -9,11 +9,15 @@ public class AimController : MonoBehaviour {
     private Vector2 posClicked;
     private Ray ray;
     private LevelManager _levelManager;
+    private float _topStop;
+    private float _botStop;
 
     //Init variables
-    public void Init(LevelManager lm)
+    public void Init(LevelManager lm, float topStop, float botStop)
     {
         _levelManager = lm;
+        _topStop = topStop;
+        _botStop = botStop;
     }
 
     //See if you click/touch and if the position is inside the game field, spawn balls to that position
@@ -23,7 +27,7 @@ public class AimController : MonoBehaviour {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR
             if (Input.GetMouseButtonDown(0))
             {
-                if (Input.mousePosition.y < 405 && Input.mousePosition.y > 60)
+                if (Input.mousePosition.y < (Screen.height - _topStop) && Input.mousePosition.y > _botStop)
                 {
                     _levelManager.SetSpawn(false);
                     ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -34,6 +38,8 @@ public class AimController : MonoBehaviour {
                     _levelManager.ballSpawner.SetPosDest(posClicked);
                     _levelManager.ballSpawner.Show(true);
                     _levelManager.ballSpawner.SpawnBalls(); // Ball spawner can launch balls
+                    _levelManager.rayPowerUpButton.gameObject.SetActive(false);
+                    _levelManager.fallBallsButton.gameObject.SetActive(true);
 
                 }
             }
@@ -52,7 +58,8 @@ public class AimController : MonoBehaviour {
                     _levelManager.ballSpawner.SetPosDest(posClicked);
                     _levelManager.ballSpawner.Show(true);
                     _levelManager.ballSpawner.SpawnBalls(); // Ball spawner can launch balls
-
+                    _levelManager.rayPowerUpButton.gameObject.SetActive(false);
+                    _levelManager.fallBallsButton.gameObject.SetActive(true);
                 }
             }
 #endif

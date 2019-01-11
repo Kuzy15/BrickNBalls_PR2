@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class RayHorizontalBrick : Bricks {
 
-    private void Start() //Set dif vars., in this case if can be destory at next round
-    {
-        _nextRoundDestroy = false;
-    }
-
-    //If it collides with the deathZone destoy it
+   
+    //If it collides with the deathZone destroy it
     //Else if a ball collides with this brick spawn a ray that hits
     //a row and destroy itself at next round
     private void OnTriggerEnter2D(Collider2D collision)
@@ -31,5 +27,18 @@ public class RayHorizontalBrick : Bricks {
     private void OnTriggerExit2D(Collider2D collision)
     {
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    // From base class Bricks, fall one position and check if it has been touched and get destroyed if so.
+    public override void Fall()
+    {
+        
+        base.Fall();
+
+        if (_nextRoundDestroy)
+            Destroy(gameObject);
+
+        
+        
     }
 }

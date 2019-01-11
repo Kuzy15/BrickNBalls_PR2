@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class OneBallBrick : Bricks {
 
-    private void Start() //Set dif vars., in this case if can be destory at next round
-    {
-        _nextRoundDestroy = false;
-    }
-
     //If it collides with the deathZone destoy it
     //Else if a ball collides with this brick add one ball
     //and destroy itself

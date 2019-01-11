@@ -7,6 +7,7 @@ public class Ball : MonoBehaviour {
     private Rigidbody2D _rb;
     private Vector3 _dir;
     private Vector3 _vel;
+    public LevelManager levelManager;
 
     void Awake()
     {

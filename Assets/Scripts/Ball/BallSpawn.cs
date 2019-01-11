@@ -23,6 +23,12 @@ public class BallSpawn : MonoBehaviour {
         StartCoroutine(SpawnBall());
     }
 
+    //Stop spawn coroutine
+    public void StopSpawnBalls()
+    {
+        StopCoroutine(SpawnBall());
+    }
+
     //Spawn a number of balls with a vel in a dir
     private IEnumerator SpawnBall()
     {

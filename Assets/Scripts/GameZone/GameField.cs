@@ -56,26 +56,21 @@ public class GameField : MonoBehaviour
                 {
                     Vector3 pos = new Vector3(transform.position.x + j, transform.position.y - i - 1.5f, 0);
                     GameObject aux = Instantiate(_block[_listBlock[x] - 1], transform.position, transform.rotation, transform);
-                    aux.GetComponent<Bricks>().Init(_levelManager);
+
+                    aux.GetComponent<Bricks>().Init(_levelManager, _listBlock[x], _listBlock[x + indexHits]);
                     aux.transform.position = pos;
-                    aux.GetComponent<Bricks>().SetTypeBrick(_listBlock[x]);
+
                     if (_listBlock[x] <= 6)
                     {
-                        //_numBlocks++;
                         _totalBlocks++;
-                        if(_listBlock[x] == 2)
-                        {
-                            aux.GetComponent<SolidBrick>().SetHits(_listBlock[x] * 2);
-                        }
-                        else
-                        {
-                            aux.GetComponent<SolidBrick>().SetHits(_listBlock[x + indexHits]);
-                        }
+ 
                     }
-                    if(_listBlock[x] == 7)
+
+                    else if(_listBlock[x] == 7)
                     {
                         _rayCont++;
                     }
+
                     _field[i,j] = aux;
                 }
                 x--;
@@ -87,9 +82,13 @@ public class GameField : MonoBehaviour
         {
             for (int i = x; i >= 0; i--)
             {
-                if(_listBlock[i] > 0 && _listBlock[i] < 7)
+                if(_listBlock[i] < 7)
                 {
                     _totalBlocks++;
+                }
+                else if (_listBlock[x] == 7)
+                {
+                    _rayCont++;
                 }
                 _extrafield.Add(_listBlock[i]);
             }
@@ -98,6 +97,8 @@ public class GameField : MonoBehaviour
                 _extrafield.Add(_listBlock[i + indexHits]);
             }
         }
+
+       
     }
 
     //Amount of bricks in scene
@@ -120,32 +121,29 @@ public class GameField : MonoBehaviour
     {
         int x = (_extrafield.Count - 1) / 2;
         int indexHits = (_extrafield.Count - 1) / 2 + 1;
-            for (int j = 10; j >= 0; j--)
+        for (int j = 10; j >= 0; j--)
         {
-        for (int i = 13; i >= 0; i--)
+            for (int i = 13; i >= 0; i--)
             {
                 if (_field[i, j] != null)
                 {
-                    if (_field[i, j].gameObject.GetComponent<Bricks>().GetCanDestroyNextRound())
+
+                    if (!_field[i, j].gameObject.GetComponent<Bricks>().canFall())
                     {
-                        Destroy(_field[i, j].gameObject);
+
+                        j--;
+                        i = 13;
+
                     }
+
                     else
                     {
-                        Vector3 newPos = new Vector3(_field[i, j].gameObject.transform.position.x, (_field[i, j].gameObject.transform.position.y - 1), _field[i, j].gameObject.transform.position.z);
-                        _field[i, j].gameObject.transform.position = newPos;
-                       /* if (!_field[i, j].GetComponent<Bricks>().Move())
-                        {
-                            j--;
-                            i = 13;
-                        }
-                        else
-                        {*/
-                            GameObject aux = _field[i, j];
-                            _field[i, j] = null;
-                            _field[i + 1, j] = aux;
-                       // }
+                        _field[i, j].gameObject.GetComponent<Bricks>().Fall();
+                        GameObject aux = _field[i, j];
+                        _field[i, j] = null;
+                        _field[i + 1, j] = aux;
                     }
+
                 }
             }
         }
@@ -159,25 +157,9 @@ public class GameField : MonoBehaviour
                 {
                     Vector3 pos = new Vector3(transform.position.x + i, transform.position.y - 1.5f, 0);
                     GameObject aux = Instantiate(_block[_extrafield[x] - 1], transform.position, transform.rotation, transform);
-                    aux.GetComponent<Bricks>().Init(_levelManager);
+                    aux.GetComponent<Bricks>().Init(_levelManager, _listBlock[x], _extrafield[x + indexHits]);
                     aux.transform.position = pos;
-                    aux.GetComponent<Bricks>().SetTypeBrick(_listBlock[x]);
-                    if (_extrafield[x] <= 6)
-                    {
-                        //_numBlocks++;
-                        if (_listBlock[x] == 2)
-                        {
-                            aux.GetComponent<SolidBrick>().SetHits(_extrafield[x] * 2);
-                        }
-                        else
-                        {
-                            aux.GetComponent<SolidBrick>().SetHits(_extrafield[x + indexHits]);
-                        }
-                    }
-                    if (_listBlock[x] == 7)
-                    {
-                        _rayCont++;
-                    }
+ 
                     _field[0, i] = aux;
                 }
             }
@@ -188,7 +170,7 @@ public class GameField : MonoBehaviour
             _extrafield.RemoveRange(_extrafield.Count - 12, 11);
             _extrafield.RemoveRange(x, 11);
         }
-        ///EndGame(); No se si hay que quitarlo comprobar
+        
     }
 
     //Check if is necessary active the warnings
@@ -235,13 +217,12 @@ public class GameField : MonoBehaviour
     }
 
 
-    // HACER: CAMBIAR ESTE METODO DE SITIO Y SEPARARLO EN:
-    // UN METODO EN ESTE SCRIPT QUE BUSQUE UNA POSICION LIBRE Y OTRO METODO QUE AL CLICKER EN EL BOTON DE RAY POWER UP NOS COLOQUE UN BRICK DE RAY EN UNA POS LIBRE.
+  
 
     //If you have got ray powerup, see the free positions of the board and it creates two
     //rayBricks in a random free position
     //Then save the game
-    public void RayPowerUpClick()
+    private void CalculateFreePos()
     {
         if (GameManager.gameManagerInstace.GetNRayPowerUp() > 0)
         {
@@ -260,23 +241,33 @@ public class GameField : MonoBehaviour
                     }
                 }
             }
-            for (int a = 0; a < 2; a++)
-            {
-                if (_freePos.Count > 0)
-                {
-                    int rnd = Random.Range(0, _freePos.Count - 1);
 
-                    Vector3 pos = new Vector3(transform.position.x + _freePos[rnd]._y, transform.position.y - _freePos[rnd]._x - 1.5f, 0);
-                    GameObject aux = Instantiate(_block[6], transform.position, transform.rotation, transform);
-                    aux.GetComponent<Bricks>().Init(_levelManager);
-                    aux.transform.position = pos;
-                    aux.GetComponent<Bricks>().SetTypeBrick(7);
-                    _field[_freePos[rnd]._x, _freePos[rnd]._y] = aux;
-                    _freePos.RemoveAt(rnd);
-                }
-            }
-            _freePos.Clear();
         }
+    }
+
+    public void CreateRayPowerUp()
+    {
+
+        CalculateFreePos();
+
+        for (int i = 0; i < 2; i++)
+        {
+            if (_freePos.Count > 0)
+            {
+                int rnd = Random.Range(0, _freePos.Count - 1);
+
+                Vector3 pos = new Vector3(transform.position.x + _freePos[rnd]._y, transform.position.y - _freePos[rnd]._x - 1.5f, 0);
+                GameObject aux = Instantiate(_block[6], transform.position, transform.rotation, transform);
+
+                aux.GetComponent<Bricks>().Init(_levelManager, 7, 0);
+
+                aux.transform.position = pos;
+                _field[_freePos[rnd]._x, _freePos[rnd]._y] = aux;
+                _freePos.RemoveAt(rnd);
+            }
+        }
+        _freePos.Clear();
+
         SaveAndLoad.Save();
     }
 }

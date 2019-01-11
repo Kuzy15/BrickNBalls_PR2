@@ -10,48 +10,53 @@ public class ResizeManager : MonoBehaviour {
     public Canvas botCanvas;
 
 
-    float _gameFieldHeight = 14.0f;// * 1.5f;
+    private float _gameFieldHeight = 14.0f * 1.5f;
+    private float _gameFieldWidth = 11.5f * 1.5f;
+    private LevelManager _levelManager;
+    private float _topStop;
+    private float _botStop;
+
+    public void Init(LevelManager lm)
+    {
+        _levelManager = lm;
+    }
 
     public void Resize()
     {
-        Canvas.ForceUpdateCanvases();
 
         float cameraSizeHeight = mainCamera.orthographicSize * 2;
-        float cameraSizeWidth = cameraSizeHeight * mainCamera.aspect;
-
         float pixelInUnits = cameraSizeHeight / mainCamera.pixelHeight;
 
 
-        float topCanvasSize = topCanvas.GetComponent<RectTransform>().rect.height * mainCanvas.GetComponent<RectTransform>().localScale.y;
-        //Rect aux = new Rect(topCanvas.GetComponent<RectTransform>().rect.x, topCanvas.GetComponent<RectTransform>().rect.y, topCanvas.GetComponent<RectTransform>().rect.width, topCanvasSize);
-        //topCanvas.GetComponent<RectTransform>().rect.Set(aux.x, aux.y, aux.width, aux.height);
+        float topCanvasSize = topCanvas.transform.GetChild(0).GetComponent<RectTransform>().rect.height;
+        _topStop = topCanvasSize;// * pixelInUnits;
 
-        float botCanvasSize = botCanvas.GetComponent<RectTransform>().rect.height * mainCanvas.GetComponent<RectTransform>().localScale.y;
-        //aux = new Rect(botCanvas.GetComponent<RectTransform>().rect.x, botCanvas.GetComponent<RectTransform>().rect.y, botCanvas.GetComponent<RectTransform>().rect.width, botCanvasSize);
-        //botCanvas.GetComponent<RectTransform>().rect.Set(aux.x, aux.y, aux.width, aux.height);
-        /*float gameFieldHeigth = Screen.height - (topCanvasSize + botCanvasSize);
+        float botCanvasSize = botCanvas.transform.GetChild(0).GetComponent<RectTransform>().rect.height;
+        _botStop = botCanvasSize;// *pixelInUnits;
 
-        float totalPixeles = gameFieldHeigth + topCanvasSize + botCanvasSize;
-        float totalUnits = totalPixeles / pixelInUnits;*/
+        float gameFieldHole = Screen.height - (topCanvasSize + botCanvasSize) * pixelInUnits;
 
-        float unidadesTop = topCanvasSize * pixelInUnits;
-        float unidadesBot = botCanvasSize * pixelInUnits;
+        float newCameraSize = _gameFieldHeight * (gameFieldHole * pixelInUnits) / cameraSizeHeight;
+        mainCamera.orthographicSize = newCameraSize / 2;
 
-        mainCamera.orthographicSize = ((_gameFieldHeight / 2) + (unidadesTop / 2) + (unidadesBot / 2));
-
-       // float cameraWidthUnits = mainCamera.orthographicSize * 2 * mainCamera.aspect;
-
-       // float botpos = topCanvas.GetComponent<RectTransform>().rect.height + _gameFieldHeight * pixelInUnits;
-
-        /*if (cameraWidthUnits < 12.0f)
+        
+       /* if (Screen.width * pixelInUnits < 11.5f)
         {
-            float newCameraHeightSize = 12.0f / mainCamera.aspect;
-            mainCamera.orthographicSize = (newCameraHeightSize / 2);
+            Screen.w = 11.5f * pixelInUnits;
 
         }*/
 
+        Canvas.ForceUpdateCanvases();
         Destroy(gameObject);
     }
 
-   
+    public float GetTopStop()
+    {
+        return _topStop;
+    }
+
+    public float GetBotStop()
+    {
+        return _botStop;
+    }
 }
