@@ -223,8 +223,8 @@ public class LevelManager : MonoBehaviour {
     //Show a skipeable ad and deactivate bonus button
     public void OnClickAdsPoints()
     {
+        adsButton.gameObject.SetActive(false);
         adsManagerGame.ShowAd();
-        adsButton.interactable = false;
     }
 
     //Create ray bricks
@@ -315,6 +315,7 @@ public class LevelManager : MonoBehaviour {
     //Show end buttons and save the game
     public void LevelCompleted()
     {
+        _spawn = false;
         adsManagerGame.ShowNoSkipAd();
 
         int level = GameManager.gameManagerInstace.GetCurrentLevel();

@@ -111,6 +111,7 @@ public class AdsManagerGame : MonoBehaviour
                 }
                 break;
             case ShowResult.Skipped:
+                _first = false;
                 //Debug.Log("The ad was skipped before reaching the end.");
                 break;
             case ShowResult.Failed:
