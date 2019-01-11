@@ -13,7 +13,7 @@ public class SelectLevelManager : MonoBehaviour {
     //Available maps
     private TextAsset[] maps = new TextAsset[10];
     //Buttons
-    private Button[] buttons;
+    private Button[] _buttons;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +25,7 @@ public class SelectLevelManager : MonoBehaviour {
 
         //Take only level buttons and sort them
         Button[] allButtons = FindObjectsOfType<Button>();
-        buttons = new Button[allButtons.Length - 2];
+        _buttons = new Button[allButtons.Length - 2];
         int index;
         for(int i = 0; i < allButtons.Length; i++)
         {
@@ -38,29 +38,29 @@ public class SelectLevelManager : MonoBehaviour {
                 }
                 Int32.TryParse(level, out index);
                 index--;
-                buttons[index] = allButtons[i];
+                _buttons[index] = allButtons[i];
             }
         }
         //Set to each button its LoadLevel method with its map
-#region Listener Buttons
-        buttons[0].onClick.AddListener(delegate { LoadLevel(maps[0], 0); });
-        buttons[1].onClick.AddListener(delegate { LoadLevel(maps[1], 1); });
-        buttons[2].onClick.AddListener(delegate { LoadLevel(maps[2], 2); });
-        buttons[3].onClick.AddListener(delegate { LoadLevel(maps[3], 3); });
-        buttons[4].onClick.AddListener(delegate { LoadLevel(maps[4], 4); });
-        buttons[5].onClick.AddListener(delegate { LoadLevel(maps[5], 5); });
-        buttons[6].onClick.AddListener(delegate { LoadLevel(maps[6], 6); });
-        buttons[7].onClick.AddListener(delegate { LoadLevel(maps[7], 7); });
-        buttons[8].onClick.AddListener(delegate { LoadLevel(maps[8], 8); });
-        buttons[9].onClick.AddListener(delegate { LoadLevel(maps[9], 9); });
+        #region Listener Buttons
+        _buttons[0].onClick.AddListener(delegate { LoadLevel(maps[0], 0); });
+        _buttons[1].onClick.AddListener(delegate { LoadLevel(maps[1], 1); });
+        _buttons[2].onClick.AddListener(delegate { LoadLevel(maps[2], 2); });
+        _buttons[3].onClick.AddListener(delegate { LoadLevel(maps[3], 3); });
+        _buttons[4].onClick.AddListener(delegate { LoadLevel(maps[4], 4); });
+        _buttons[5].onClick.AddListener(delegate { LoadLevel(maps[5], 5); });
+        _buttons[6].onClick.AddListener(delegate { LoadLevel(maps[6], 6); });
+        _buttons[7].onClick.AddListener(delegate { LoadLevel(maps[7], 7); });
+        _buttons[8].onClick.AddListener(delegate { LoadLevel(maps[8], 8); });
+        _buttons[9].onClick.AddListener(delegate { LoadLevel(maps[9], 9); });
 #endregion   
         //Show each level´s stars and if the level is locked or not
         for (int i = 0; i < GameManager.gameManagerInstace.GetLevels().Length; i++)
         {
-            buttons[i].transform.GetChild(1).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._stars[0]);
-            buttons[i].transform.GetChild(2).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._stars[1]);
-            buttons[i].transform.GetChild(3).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._stars[2]);
-            buttons[i].transform.GetChild(4).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._lock);
+            _buttons[i].transform.GetChild(1).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._stars[0]);
+            _buttons[i].transform.GetChild(2).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._stars[1]);
+            _buttons[i].transform.GetChild(3).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._stars[2]);
+            _buttons[i].transform.GetChild(4).gameObject.SetActive(GameManager.gameManagerInstace.GetLevels()[i]._lock);
         }
 
         //Show rubies´ text
@@ -71,7 +71,7 @@ public class SelectLevelManager : MonoBehaviour {
     //If the level is unlocked Load the level 
     void LoadLevel(TextAsset map, int level)
     {
-        if (!buttons[level].transform.GetChild(4).gameObject.activeSelf) // child 0: text, child 1: star, child 2: star, child 3: star, child 4: locked
+        if (!_buttons[level].transform.GetChild(4).gameObject.activeSelf) // child 0: text, child 1: star, child 2: star, child 3: star, child 4: locked
         {
             GameManager.gameManagerInstace.SetMapLevel(map);
             SceneManager.LoadScene(1);

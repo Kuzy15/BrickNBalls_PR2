@@ -164,7 +164,8 @@ public class LevelManager : MonoBehaviour {
     {
         for (int i = 0; i < _pausedObjects.Length; i++)
         {
-            _pausedObjects[i].GetComponent<Ball>().Continue();
+            if (_pausedObjects[i] != null) // If doesn't get destroyed in the moment the game is paused
+                _pausedObjects[i].GetComponent<Ball>().Continue();
         }
        
         _spawn = true;
@@ -314,7 +315,8 @@ public class LevelManager : MonoBehaviour {
     //Show end buttons and save the game
     public void LevelCompleted()
     {
-        
+        adsManagerGame.ShowNoSkipAd();
+
         int level = GameManager.gameManagerInstace.GetCurrentLevel();
 
         if (level < 9) //Only have 10 levels
@@ -334,7 +336,7 @@ public class LevelManager : MonoBehaviour {
         {
             GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
         }
-        endScoreText.text = "Point in this level " + _points.ToString();
+        endScoreText.text = "Points " + _points.ToString();
 
         SaveAndLoad.Save();
         uiManager.WinLevel();

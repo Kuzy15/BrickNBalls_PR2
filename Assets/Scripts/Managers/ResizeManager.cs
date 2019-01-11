@@ -24,14 +24,11 @@ public class ResizeManager : MonoBehaviour {
     //Resize the camera distance to adapt the gap we have to the gameField
     public void Resize()
     {
-
         float cameraSizeHeight = mainCamera.orthographicSize * 2;
         float pixelInUnits = cameraSizeHeight / mainCamera.pixelHeight;
 
-
         float topCanvasSize = topCanvas.transform.GetChild(0).GetComponent<RectTransform>().rect.height;
         _topStop = topCanvasSize;
-
         float botCanvasSize = botCanvas.transform.GetChild(0).GetComponent<RectTransform>().rect.height;
         _botStop = botCanvasSize;
 
@@ -41,7 +38,6 @@ public class ResizeManager : MonoBehaviour {
         mainCamera.orthographicSize = newCameraSize / 2;
 
         Canvas.ForceUpdateCanvases();
-        Destroy(gameObject);
     }
 
     //Get top limit

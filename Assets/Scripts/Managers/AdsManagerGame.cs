@@ -9,6 +9,7 @@ public class AdsManagerGame : MonoBehaviour
 
     public Text endScoreText;
     private LevelManager _levelManager;
+    private bool _first;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class AdsManagerGame : MonoBehaviour
     public void Init(LevelManager lm)
     {
         _levelManager = lm;
+        _first = true;
     }
 
     //Show a banner
@@ -60,6 +62,22 @@ public class AdsManagerGame : MonoBehaviour
         Advertisement.Show("video", options);
     }
 
+    //Show and ad that you can´t skip
+    public void ShowNoSkipAd()
+    {
+        StartCoroutine(ShowNoSkipAdCoroutine());
+    }
+
+    IEnumerator ShowNoSkipAdCoroutine()
+    {
+        while (!Advertisement.IsReady("rewardedVideo"))
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        ShowOptions options = new ShowOptions { resultCallback = HandleShowResult };
+        Advertisement.Show("rewardedVideo", options);
+    }
+
     //If you finish the ad you get some rubies, else nothing
     private void HandleShowResult(ShowResult result)
     {
@@ -67,24 +85,30 @@ public class AdsManagerGame : MonoBehaviour
         {
             case ShowResult.Finished:
                 //Debug.Log("The ad was successfully shown.");
-                int points = _levelManager.GetPoints() + 250;
-                _levelManager.SetPoints(points);
-                int level = GameManager.gameManagerInstace.GetCurrentLevel();
-                if (points > _levelManager.gameField.GetTotalBlocks() * 30 / 4)
+                if (!_first)
                 {
-                    GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[0] = true;
+                    int points = _levelManager.GetPoints() + 250;
+                    _levelManager.SetPoints(points);
+                    int level = GameManager.gameManagerInstace.GetCurrentLevel();
+                    if (points > _levelManager.gameField.GetTotalBlocks() * 30 / 4)
+                    {
+                        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[0] = true;
+                    }
+                    if (points > _levelManager.gameField.GetTotalBlocks() * 30 / 2)
+                    {
+                        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[1] = true;
+                    }
+                    if (points > _levelManager.gameField.GetTotalBlocks() * 30)
+                    {
+                        GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
+                    }
+                    endScoreText.text = "Point " + points.ToString();
+                    SaveAndLoad.Save();
                 }
-                if (points > _levelManager.gameField.GetTotalBlocks() * 30 / 2)
+                else
                 {
-                    GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[1] = true;
+                    _first = false;
                 }
-                if (points > _levelManager.gameField.GetTotalBlocks() * 30)
-                {
-                    GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
-                }
-                endScoreText.text = "Point in this level " + points.ToString();
-                SaveAndLoad.Save();
-
                 break;
             case ShowResult.Skipped:
                 //Debug.Log("The ad was skipped before reaching the end.");
