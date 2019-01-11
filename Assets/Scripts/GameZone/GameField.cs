@@ -216,12 +216,7 @@ public class GameField : MonoBehaviour
         return false;
     }
 
-
-  
-
-    //If you have got ray powerup, see the free positions of the board and it creates two
-    //rayBricks in a random free position
-    //Then save the game
+    //See free pos in gameField
     private void CalculateFreePos()
     {
         if (GameManager.gameManagerInstace.GetNRayPowerUp() > 0)
@@ -245,9 +240,12 @@ public class GameField : MonoBehaviour
         }
     }
 
+
+    //If you have got ray powerup, see the free positions of the board and it creates two
+    //rayBricks in a random free position
+    //Then save the game
     public void CreateRayPowerUp()
     {
-
         CalculateFreePos();
 
         for (int i = 0; i < 2; i++)

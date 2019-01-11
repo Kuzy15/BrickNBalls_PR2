@@ -18,7 +18,6 @@ public class LevelManager : MonoBehaviour {
     
     public Ball ballPrefab;
 
-
     public Text scoreText;
     public Text endScoreText;
 
@@ -145,7 +144,7 @@ public class LevelManager : MonoBehaviour {
     //Get all balls of the sccene, set its vel to 0, and show pused buttons, you can´t spawn
     public void OnClickPauseMenu()
     {
-        _pausedObjects = GameObject.FindGameObjectsWithTag("Ball"); // HACER: CAMBIAR ESTO, NO ES BUENO BUSCAR CON TAG
+        _pausedObjects = GameObject.FindGameObjectsWithTag("Ball");
         for(int i =0; i < _pausedObjects.Length; i++)
         {
             if(_pausedObjects[i] != null) // If doesn't get destroyed in the moment the game is paused
@@ -220,20 +219,21 @@ public class LevelManager : MonoBehaviour {
         SceneManager.LoadScene(0);
     }
 
-    //
+    //Show a skipeable ad and deactivate bonus button
     public void OnClickAdsPoints()
     {
         adsManagerGame.ShowAd();
         adsButton.interactable = false;
     }
 
-    //
+    //Create ray bricks
     public void OnClickRayPowerUp()
     {
         gameField.CreateRayPowerUp();
     }
 
-    //
+    //Accumulate all balls at spawn/stacker position
+    //field move 1 position and check if you lose or not
     public void OnClickFallBalls()
     {
         ballSpawner.StopSpawnBalls();
@@ -246,7 +246,7 @@ public class LevelManager : MonoBehaviour {
         {
             ballSpawner.MoveTo(ballStacker.transform.position); // Spawn position is the ball stacker last position
         }
-        _spawn = true;
+        SetSpawn(true);
         rayPowerUpButton.gameObject.SetActive(true);
         fallBallsButton.gameObject.SetActive(false);
         ballSpawner.Show(true);
@@ -293,7 +293,7 @@ public class LevelManager : MonoBehaviour {
         else
         {
             ball.GoTo(ballStacker.transform.position);
-            ProcessPlay(ball); // HACER: SI SE PONE COMO PARAMETRO (CALLBACK) DEL METODO GOTO VA MAL¿?
+            ProcessPlay(ball);
         }
     }
 

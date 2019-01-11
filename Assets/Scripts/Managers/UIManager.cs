@@ -25,7 +25,6 @@ public class UIManager : MonoBehaviour {
     {
         _pause.gameObject.SetActive(false);
         _play.gameObject.SetActive(true);
-
     }
 
     public void Pause()

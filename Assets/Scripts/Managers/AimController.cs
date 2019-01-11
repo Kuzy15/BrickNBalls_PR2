@@ -47,7 +47,7 @@ public class AimController : MonoBehaviour {
 #if UNITY_ANDROID && !UNITY_EDITOR
             if (Input.touchCount > 0)
             {
-                if (Input.GetTouch(0).position.y > 250 && Input.GetTouch(0).position.y < 1700)
+                if (Input.GetTouch(0).position.y < (Screen.height - _topStop) && Input.GetTouch(0).position.y > _botStop)
                 {
                     _levelManager.SetSpawn(false);
                     ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);

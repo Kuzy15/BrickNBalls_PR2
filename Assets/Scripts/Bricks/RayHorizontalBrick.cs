@@ -31,14 +31,10 @@ public class RayHorizontalBrick : Bricks {
 
     // From base class Bricks, fall one position and check if it has been touched and get destroyed if so.
     public override void Fall()
-    {
-        
+    {    
         base.Fall();
 
         if (_nextRoundDestroy)
-            Destroy(gameObject);
-
-        
-        
+            Destroy(gameObject);     
     }
 }

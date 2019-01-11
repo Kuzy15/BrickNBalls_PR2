@@ -22,15 +22,16 @@ public class Bricks : MonoBehaviour
         if (_type == 2)
             _nHits = nHits * 2;
 
-
         _nextRoundDestroy = false;
         _canFall = true;
     }
+
     //Set number of hits
     public void SetHits(int n)
     {
         _nHits = n;
     }
+
     //Get number of hits
     public int GetHits()
     {
@@ -53,11 +54,10 @@ public class Bricks : MonoBehaviour
     public virtual void Fall()
     {
             Vector3 newPos = new Vector3(gameObject.transform.position.x, (gameObject.transform.position.y - 1), gameObject.transform.position.z);
-            gameObject.transform.position = newPos;
-            
-       
+            gameObject.transform.position = newPos;      
     }
 
+    //Return if a brick can fall
     public bool canFall()
     {
         return _canFall;

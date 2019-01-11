@@ -11,10 +11,9 @@ public class SolidBrick : Bricks {
         GetComponentInChildren<TextMesh>().text = _nHits.ToString();
     }
 
-  //if you colision with the deathZone destory the gameObject, if you colision with
-  //other thing, subtract 1 to hits
-  //In case of having 0 hits, add points and destroy the brick
-
+    //if you colision with the deathZone destory the gameObject, if you colision with
+    //other thing, subtract 1 to hits
+    //In case of having 0 hits, add points and destroy the brick
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<DeathZone>())

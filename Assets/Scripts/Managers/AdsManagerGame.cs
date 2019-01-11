@@ -23,11 +23,13 @@ public class AdsManagerGame : MonoBehaviour
         _levelManager = lm;
     }
 
+    //Show a banner
     public void ShowBanner()
     {
         StartCoroutine(ShowBannerCoroutine());
     }
 
+    //Hide and destroy the banner
     public void HideBanner()
     {
         Advertisement.Banner.Hide(true);
