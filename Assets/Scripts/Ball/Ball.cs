@@ -14,7 +14,7 @@ public class Ball : MonoBehaviour {
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    //Set the vel of a ball
+    //Set the ball velocity to the calculate direction vector
     public void StartMoving(Vector3 pos) // StartMoving(pos, velocity)
     {
         float mod = Mathf.Sqrt(Mathf.Pow(pos.x - transform.position.x, 2) + Mathf.Pow(pos.y - transform.position.y, 2));
@@ -36,17 +36,38 @@ public class Ball : MonoBehaviour {
     //Coroutine to go to sink/stacker position, when the ball is in sink/stacker position, it is destroyed
     private IEnumerator GoToCoroutine(Vector3 pos, System.Action<Ball> callback = null) 
     {
-        while (pos.x <= transform.position.x - 0.3f || pos.x >= transform.position.x + 0.3f)
+        /* while (pos.x <= transform.position.x - 0.3f || pos.x >= transform.position.x + 0.3f)
+         {
+             yield return new WaitForFixedUpdate();
+
+             transform.position = new Vector3(transform.position.x + (_dir.x * 0.3f), pos.y, 0);
+
+             if (callback != null)
+             {
+                 callback(this);
+             }
+         }*/
+        float distance = pos.x - transform.position.x;
+        float step = 3 / distance;
+        if (distance != 0)
         {
-            yield return new WaitForFixedUpdate();
 
-            transform.position = new Vector3(transform.position.x + (_dir.x * 0.3f), pos.y, 0);
+            int totalSteps = Mathf.Abs(Mathf.RoundToInt(distance / step));
 
-            if (callback != null)
+            for (int i = 0; i < totalSteps; i++)
             {
-                callback(this);
+                yield return new WaitForSecondsRealtime(0.02f);
+                gameObject.transform.Translate(new Vector3(step, 0, 0));
             }
         }
+
+        gameObject.transform.transform.position = new Vector3(pos.x, pos.y);
+
+        if (callback != null)
+        {
+            callback(this);
+        }
+
         Destroy(gameObject);
     }
 

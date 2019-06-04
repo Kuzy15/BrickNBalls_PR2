@@ -1,0 +1,17 @@
+A veces la simulación falla y las bolasse quedan rebotando en horizontal. ¿Alguna idea?
+Las bolas pasan entre medias de los bloques de vez en cuando.
+
+
+Los límites laterales no están bien. Es posible meter las bols entre el lateral y el borde de los tiles de ese lado. ¿Por qué hay hueco ahí?
+¿Por qué está limitado a 10 niveles? La forma en la que está hecha es demasiado artesanal y cableada (y usar FindObjectsOfType no es muy aconsejable).
+
+En general, se echa de menos feedback.
+A veces ¡¡¡el tablero no baja tras acabar un disparo!!!
+A veces hay que pulsar varias veces para disparar
+A veces ¡¡no se restan vidas a los bloques!!
+El botón de recoger las bolas a veces origina un disparo automático sin control, que encima no cambia el HUD quedando en ""modo disparo"", se puede disparar, habiendo dos disparos en marcha y quedando dos bolas abajo de marcador de posición.
+No se sabe cuántas estrellas se llevan.
+¿Tiene sentido que se puedan utilizar potenciadores a mitad de un disparo? /*******depende del bug del boton de recoger bolas
+El comportamiento es irregular. A veces al superar un nivel se vuelve a la selección de niveles (tras ver un anuncio).
+
+Cuando se supera el nivel 9 la flecha de continuar no funciona, y el nivel 10 no se desbloquea.

@@ -8,6 +8,7 @@ public class BallSpawn : MonoBehaviour {
     private uint _nBalls;
     private Vector3 _posDest;
     private LevelManager _levelManger;
+    //public TextMesh _label;
 
     //Init variables
     public void Init(Ball ballPrefab, uint nBalls, LevelManager lm) {
@@ -29,6 +30,7 @@ public class BallSpawn : MonoBehaviour {
         StopCoroutine(SpawnBall());
     }
 
+    // TODO: REVISAR
     //Spawn a number of balls with a vel in a dir
     private IEnumerator SpawnBall()
     {
@@ -67,16 +69,18 @@ public class BallSpawn : MonoBehaviour {
         _posDest = pos;
     }
 
-    //Set a numebr of balls
+    //Set a number of balls
     public void SetNBalls(uint n)
     {
         _nBalls = n;
+        gameObject.GetComponentInChildren<TextMesh>().text = "x" + (_nBalls).ToString();
     }
 
     //Show the spawner
     public void Show(bool s)
     {
         gameObject.GetComponent<SpriteRenderer>().enabled = s;
+        GetComponentInChildren<MeshRenderer>().enabled = s;
 
     }
 }

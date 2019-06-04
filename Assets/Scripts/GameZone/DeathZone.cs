@@ -18,6 +18,7 @@ public class DeathZone : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D col)
     {
         Ball b = col.GetComponent<Ball>();
+
         if(b != null)
         {
             b.Stop();

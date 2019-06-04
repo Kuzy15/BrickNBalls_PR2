@@ -293,8 +293,8 @@ public class LevelManager : MonoBehaviour {
         }
         else
         {
-            ball.GoTo(ballStacker.transform.position);
-            ProcessPlay(ball);
+            ball.GoTo(ballStacker.transform.position, ProcessPlay);
+            //ProcessPlay(ball);
         }
     }
 
@@ -308,6 +308,11 @@ public class LevelManager : MonoBehaviour {
     public void ActiveWarnings()
     {
         warnings.SetActive(gameField.ActiveWarnings());
+    }
+
+    public void DeactivateWarnings()
+    {
+        warnings.SetActive(false);
     }
 
     //If you destroy all blocks, you can´t spawn, you end this round(map), unlock next map
