@@ -43,8 +43,6 @@ public class AimController : MonoBehaviour {
 
                     _levelManager.DeactivateWarnings();
 
-                
-
                 }
             }
 #endif

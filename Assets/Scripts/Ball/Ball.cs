@@ -33,6 +33,7 @@ public class Ball : MonoBehaviour {
         StartCoroutine(GoToCoroutine(pos, callback));
     }
 
+    // TODO: REVISAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
     //Coroutine to go to sink/stacker position, when the ball is in sink/stacker position, it is destroyed
     private IEnumerator GoToCoroutine(Vector3 pos, System.Action<Ball> callback = null) 
     {
