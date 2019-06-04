@@ -8,6 +8,7 @@ public class BallSpawn : MonoBehaviour {
     private uint _nBalls;
     private Vector3 _posDest;
     private LevelManager _levelManger;
+    //public TextMesh _label;
 
     //Init variables
     public void Init(Ball ballPrefab, uint nBalls, LevelManager lm) {
@@ -77,6 +78,7 @@ public class BallSpawn : MonoBehaviour {
     public void Show(bool s)
     {
         gameObject.GetComponent<SpriteRenderer>().enabled = s;
+        GetComponentInChildren<MeshRenderer>().enabled = s;
 
     }
 }

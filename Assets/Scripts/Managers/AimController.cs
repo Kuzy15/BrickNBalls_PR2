@@ -25,7 +25,7 @@ public class AimController : MonoBehaviour {
         if (_levelManager.GetSpawn())
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonUp(0))
             {
                 if (Input.mousePosition.y < (Screen.height - _topStop) && Input.mousePosition.y > _botStop)
                 {
@@ -40,6 +40,9 @@ public class AimController : MonoBehaviour {
                     _levelManager.ballSpawner.SpawnBalls(); // Ball spawner can launch balls
                     _levelManager.rayPowerUpButton.gameObject.SetActive(false);
                     _levelManager.fallBallsButton.gameObject.SetActive(true);
+
+                    _levelManager.DeactivateWarnings();
+                
 
                 }
             }

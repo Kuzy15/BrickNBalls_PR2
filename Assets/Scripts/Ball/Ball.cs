@@ -14,7 +14,7 @@ public class Ball : MonoBehaviour {
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    //Set the vel of a ball
+    //Set the ball velocity to the calculate direction vector
     public void StartMoving(Vector3 pos) // StartMoving(pos, velocity)
     {
         float mod = Mathf.Sqrt(Mathf.Pow(pos.x - transform.position.x, 2) + Mathf.Pow(pos.y - transform.position.y, 2));

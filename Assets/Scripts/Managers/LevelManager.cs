@@ -310,6 +310,11 @@ public class LevelManager : MonoBehaviour {
         warnings.SetActive(gameField.ActiveWarnings());
     }
 
+    public void DeactivateWarnings()
+    {
+        warnings.SetActive(false);
+    }
+
     //If you destroy all blocks, you can´t spawn, you end this round(map), unlock next map
     //Set a number of star in function of points and show stars in select level scene
     //Show end buttons and save the game

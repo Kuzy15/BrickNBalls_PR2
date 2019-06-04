@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BallStacker : MonoBehaviour {
 
-    public TextMesh _label;
+    //public TextMesh _label;
     private uint _ballStacked;
 
 	
@@ -22,14 +22,15 @@ public class BallStacker : MonoBehaviour {
     public void Show(bool s)
     {
         GetComponent<SpriteRenderer>().enabled = s;
-        _label.GetComponentInChildren<MeshRenderer>().enabled = s;
+        GetComponentInChildren<MeshRenderer>().enabled = s;
+       
     }
 
     //Add one ball
     public void AddBall()
     {
         _ballStacked++;
-        _label.text = "x" + (_ballStacked).ToString();
+        GetComponentInChildren<TextMesh>().text = "x" + (_ballStacked).ToString();
     }
 
     //Get all stacked balls
