@@ -293,6 +293,8 @@ public class LevelManager : MonoBehaviour {
         }
         else
         {
+            ball.transform.position = new Vector3(ball.transform.position.x, ballSpawner.transform.position.y, ball.transform.position.z); //Set y ball position equal to spawner/stacker y position
+            // ProcessPlay is called as callback once the ball is at the stacker
             ball.GoTo(ballStacker.transform.position, ProcessPlay);
             //ProcessPlay(ball);
         }
@@ -375,13 +377,14 @@ public class LevelManager : MonoBehaviour {
             
             _firstBall = true;
 
-            if (!_endRound)
-            {
-              SetSpawn(true);
-            }
 
             MoveBlocks(); //Move gameField blocks
             ActiveWarnings(); //Active warnings if is necessary
+
+            if (!_endRound)
+            {
+                SetSpawn(true);
+            }
 
             if (gameField.WinGame())
             {

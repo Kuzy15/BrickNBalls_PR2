@@ -21,7 +21,7 @@ public class AimController : MonoBehaviour {
     }
 
     //See if you click/touch and if the position is inside the game field, spawn balls to that position
-    void FixedUpdate () {
+    void Update () {
         if (_levelManager.GetSpawn())
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR
@@ -62,6 +62,9 @@ public class AimController : MonoBehaviour {
                     _levelManager.ballSpawner.SpawnBalls(); // Ball spawner can launch balls
                     _levelManager.rayPowerUpButton.gameObject.SetActive(false);
                     _levelManager.fallBallsButton.gameObject.SetActive(true);
+            
+                    _levelManager.DeactivateWarnings();
+
                 }
             }
 #endif

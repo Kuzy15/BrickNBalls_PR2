@@ -56,9 +56,9 @@ public class Ball : MonoBehaviour {
 
         if (difference != 0)
         {
-            int totalSteps = Mathf.Abs(Mathf.RoundToInt(difference / iteration));
+            int totalIterations = Mathf.Abs(Mathf.RoundToInt(difference / iteration));
 
-            for (int i = 0; i < totalSteps; i++)
+            for (int i = 0; i < totalIterations; i++)
             {
                 yield return new WaitForSecondsRealtime(0.01f);
                 gameObject.transform.Translate(new Vector3(iteration, 0, 0));

@@ -27,7 +27,8 @@ public class BallSpawn : MonoBehaviour {
     //Stop spawn coroutine
     public void StopSpawnBalls()
     {
-        StopCoroutine(SpawnBall());
+        //StopCoroutine(SpawnBall());
+        StopAllCoroutines();
     }
 
     // TODO: REVISAR
