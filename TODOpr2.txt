@@ -1,5 +1,5 @@
 A veces la simulación falla y las bolasse quedan rebotando en horizontal. ¿Alguna idea?
-Las bolas pasan entre medias de los bloques de vez en cuando.
+Las bolas pasan entre medias de los bloques de vez en cuando. <---------------
 
 
 Los límites laterales no están bien. Es posible meter las bols entre el lateral y el borde de los tiles de ese lado. ¿Por qué hay hueco ahí?

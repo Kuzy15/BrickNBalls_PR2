@@ -48,21 +48,24 @@ public class Ball : MonoBehaviour {
                  callback(this);
              }
          }*/
-        float distance = pos.x - transform.position.x;
-        float step = 3 / distance;
-        if (distance != 0)
-        {
 
-            int totalSteps = Mathf.Abs(Mathf.RoundToInt(distance / step));
+        float difference = pos.x - transform.position.x;
+
+        // Higher the position difference beetwen the stacker an the others balls when enter the death zone, faster the velocity will be
+        float iteration = 0.05f * difference; 
+
+        if (difference != 0)
+        {
+            int totalSteps = Mathf.Abs(Mathf.RoundToInt(difference / iteration));
 
             for (int i = 0; i < totalSteps; i++)
             {
-                yield return new WaitForSecondsRealtime(0.02f);
-                gameObject.transform.Translate(new Vector3(step, 0, 0));
+                yield return new WaitForSecondsRealtime(0.01f);
+                gameObject.transform.Translate(new Vector3(iteration, 0, 0));
             }
         }
 
-        gameObject.transform.transform.position = new Vector3(pos.x, pos.y);
+        //gameObject.transform.position = new Vector3(pos.x, pos.y);
 
         if (callback != null)
         {
