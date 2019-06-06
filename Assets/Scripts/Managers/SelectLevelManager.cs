@@ -10,10 +10,15 @@ public class SelectLevelManager : MonoBehaviour {
 
     //Ruby text
     public Text rubyText;
+
+    public Button ButtonPrefab;
+
+    //private static int _nLevels = 200;
     //Available maps
     private TextAsset[] maps = new TextAsset[10];
     //Buttons
     private Button[] _buttons;
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +31,9 @@ public class SelectLevelManager : MonoBehaviour {
         //Take only level buttons and sort them
         Button[] allButtons = FindObjectsOfType<Button>();
         _buttons = new Button[allButtons.Length - 2];
+
+        //_buttons = new Button[200];
+
         int index;
         for(int i = 0; i < allButtons.Length; i++)
         {
@@ -41,6 +49,28 @@ public class SelectLevelManager : MonoBehaviour {
                 _buttons[index] = allButtons[i];
             }
         }
+
+       /* for (int i = 0; i < _buttons.Length; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Button aux;
+                if (j == 0)
+                {
+                    aux = Instantiate(ButtonPrefab, new Vector3(0, 2 * (int)(i % 3), 0), new Quaternion(0, 0, 0, 0));
+                }
+                else if (j == 2)
+                {
+                    aux = Instantiate(ButtonPrefab, new Vector3(5, 2 * (int)(i % 3), 0), new Quaternion(0, 0, 0, 0));
+                }
+                else
+                {
+                    aux = Instantiate(ButtonPrefab, new Vector3(15, 2 * (int)(i % 3), 0), new Quaternion(0, 0, 0, 0));
+                }
+                _buttons[i] = aux;
+            }
+        }*/
+
         //Set to each button its LoadLevel method with its map
         #region Listener Buttons
         _buttons[0].onClick.AddListener(delegate { LoadLevel(maps[0], 0); });
