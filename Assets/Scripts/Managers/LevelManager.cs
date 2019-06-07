@@ -13,7 +13,7 @@ public class LevelManager : MonoBehaviour {
     public GameField gameField; // BoardManager
     public UIManager uiManager;
     public AimController aimController;
-    public AdsManagerGame adsManagerGame;
+    public AdsManager adsManagerGame;
     public ResizeManager resizeManager;
     
     public Ball ballPrefab;
@@ -38,7 +38,11 @@ public class LevelManager : MonoBehaviour {
 
     private GameObject[] _pausedObjects; //To all balls in game
 
-   //Init all variables, gameObjects, buttons and text
+    public GameObject star1;
+    public GameObject star2;
+    public GameObject star3;
+
+    //Init all variables, gameObjects, buttons and text
     void Awake()
     {
         //Calculate the numbre of balls for each level
@@ -66,6 +70,10 @@ public class LevelManager : MonoBehaviour {
 
         _paused = false;
         _endRound = false;
+
+        star1.gameObject.SetActive(false);
+        star2.gameObject.SetActive(false);
+        star3.gameObject.SetActive(false);
 
 
     }
@@ -105,6 +113,19 @@ public class LevelManager : MonoBehaviour {
     {
         _points += (10 * _sameRoundPoints);
         scoreText.GetComponent<Text>().text = "Points: " + _points.ToString();
+
+        if (_points > gameField.GetTotalBlocks() * 30 / 4)
+        {
+            star1.gameObject.SetActive(true);
+        }
+        if (_points > gameField.GetTotalBlocks() * 30 / 2)
+        {
+            star2.gameObject.SetActive(true);
+        }
+        if (_points > gameField.GetTotalBlocks() * 30)
+        {
+            star3.gameObject.SetActive(true);
+        }
     }
 
     //Get the points
@@ -155,7 +176,7 @@ public class LevelManager : MonoBehaviour {
         _paused = true;
 
         uiManager.Pause();
-        adsManagerGame.ShowBanner();
+        
     }
 
     //Continue method
@@ -172,7 +193,7 @@ public class LevelManager : MonoBehaviour {
         _paused = false;
 
         uiManager.Play();
-        adsManagerGame.HideBanner();
+       
     }
 
     //Paused Restart method
@@ -180,7 +201,7 @@ public class LevelManager : MonoBehaviour {
     public void OnClickRestartMenu()
     {
         SceneManager.LoadScene(1);
-        adsManagerGame.HideBanner();
+     
     }
 
     //Paused Home method
@@ -188,7 +209,7 @@ public class LevelManager : MonoBehaviour {
     public void OnClickHomeMenu()
     {
         SceneManager.LoadScene(0);
-        adsManagerGame.HideBanner();
+
     }
 
     //Win Next Level method
@@ -224,7 +245,9 @@ public class LevelManager : MonoBehaviour {
     public void OnClickAdsPoints()
     {
         adsButton.gameObject.SetActive(false);
-        adsManagerGame.ShowAd();
+        adsManagerGame.GameShowAd();
+
+        //uiManager.HideWinLevel();
     }
 
     //Create ray bricks

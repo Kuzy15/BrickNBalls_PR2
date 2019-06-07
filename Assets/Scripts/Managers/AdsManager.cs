@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
 
-public class AdsManagerGame : MonoBehaviour
+public class AdsManager : MonoBehaviour
 {
+    public Text text; //info text
 
-    public Text endScoreText;
     private LevelManager _levelManager;
     private bool _first;
 
@@ -25,66 +25,53 @@ public class AdsManagerGame : MonoBehaviour
         _first = true;
     }
 
-    //Show a banner
-    public void ShowBanner()
-    {
-        StartCoroutine(ShowBannerCoroutine());
-    }
-
-    //Hide and destroy the banner
-    public void HideBanner()
-    {
-        Advertisement.Banner.Hide(true);
-    }
-
-    IEnumerator ShowBannerCoroutine()
-    {
-        while (!Advertisement.IsReady("banner"))
-        {
-            yield return new WaitForSeconds(0.5f);
-        }
-        Advertisement.Banner.Show("banner");
-    }
-
     //Show and ad that you can skip
-    public void ShowAd()
+    public void GameShowAd()
     {
-        StartCoroutine(ShowAdCoroutine());
+        StartCoroutine(GameShowAdCoroutine());       
     }
 
-    IEnumerator ShowAdCoroutine()
+    IEnumerator GameShowAdCoroutine()
     {
         while (!Advertisement.IsReady("video"))
         {
             yield return new WaitForSeconds(0.5f);
         }
-        ShowOptions options = new ShowOptions { resultCallback = HandleShowResult };
+        ShowOptions options = new ShowOptions { resultCallback = GameHandleShowResult };
         Advertisement.Show("video", options);
+        
     }
 
     //Show and ad that you can´t skip
     public void ShowNoSkipAd()
     {
-        StartCoroutine(ShowNoSkipAdCoroutine());
+        StartCoroutine(GameShowNoSkipAdCoroutine());
     }
 
-    IEnumerator ShowNoSkipAdCoroutine()
+    IEnumerator GameShowNoSkipAdCoroutine()
     {
         while (!Advertisement.IsReady("rewardedVideo"))
         {
             yield return new WaitForSeconds(0.5f);
         }
-        ShowOptions options = new ShowOptions { resultCallback = HandleShowResult };
-        Advertisement.Show("rewardedVideo", options);
+        ShowOptions options = new ShowOptions { resultCallback = GameHandleShowResult };
+        Advertisement.Show("rewardedVideo", options);      
     }
 
-    //If you finish the ad you get some rubies, else nothing
-    private void HandleShowResult(ShowResult result)
+  
+
+    //If you finish the ad you get some points, else nothing
+    private void GameHandleShowResult(ShowResult result)
     {
+        
         switch (result)
         {
             case ShowResult.Finished:
-                //Debug.Log("The ad was successfully shown.");
+#if UNITY_EDITOR
+                Debug.Log("The ad was successfully shown.");
+
+#endif
+               
                 if (!_first)
                 {
                     int points = _levelManager.GetPoints() + 250;
@@ -102,7 +89,7 @@ public class AdsManagerGame : MonoBehaviour
                     {
                         GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
                     }
-                    endScoreText.text = "Point " + points.ToString();
+                    text.text = "Points " + points.ToString();
                     SaveAndLoad.Save();
                 }
                 else
@@ -112,6 +99,51 @@ public class AdsManagerGame : MonoBehaviour
                 break;
             case ShowResult.Skipped:
                 _first = false;
+#if UNITY_EDITOR
+                Debug.Log("The ad was skipped before reaching the end.");
+#endif
+                break;
+            case ShowResult.Failed:
+#if UNITY_EDITOR
+                Debug.LogError("The ad failed to be shown.");
+#endif                       
+                
+                break;
+                
+        }
+    }
+
+
+    //Show and ad that you can´t skip
+    public void ShopShowRewardedAd()
+    {
+        StartCoroutine(ShopShowRewardedAdCoroutine());
+    }
+
+    IEnumerator ShopShowRewardedAdCoroutine()
+    {
+        while (!Advertisement.IsReady("rewardedVideo"))
+        {
+            yield return new WaitForSeconds(0.5f);
+
+        }
+        ShowOptions options = new ShowOptions { resultCallback = ShopHandleShowResult };
+        Advertisement.Show("rewardedVideo", options);
+    }
+
+
+    //If you finish the ad you get some rubies, else nothing
+    private void ShopHandleShowResult(ShowResult result)
+    {
+        switch (result)
+        {
+            case ShowResult.Finished:
+                //Debug.Log("The ad was successfully shown.");
+                GameManager.gameManagerInstace.AddRuby(30);
+                text.text = GameManager.gameManagerInstace.GetRuby().ToString(); //Show the amount of rubies
+                SaveAndLoad.Save();
+                break;
+            case ShowResult.Skipped:
                 //Debug.Log("The ad was skipped before reaching the end.");
                 break;
             case ShowResult.Failed:
