@@ -54,6 +54,10 @@ public class GameField : MonoBehaviour
             {
                 if (_listBlock[x] != 0)
                 {
+
+                    if (_listBlock[x] >= 9)
+                        _listBlock[x] = 1;
+
                     Vector3 pos = new Vector3(transform.position.x + j, transform.position.y - i - 1.5f, 0);
                     GameObject aux = Instantiate(_block[_listBlock[x] - 1], transform.position, transform.rotation, transform);
 

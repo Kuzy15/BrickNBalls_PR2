@@ -122,7 +122,7 @@ public class LevelManager : MonoBehaviour {
         {
             star2.gameObject.SetActive(true);
         }
-        if (_points > gameField.GetTotalBlocks() * 30)
+        if (_points > gameField.GetTotalBlocks() * 40)
         {
             star3.gameObject.SetActive(true);
         }
@@ -350,7 +350,7 @@ public class LevelManager : MonoBehaviour {
 
         int level = GameManager.gameManagerInstace.GetCurrentLevel();
 
-        if (level < 9) //Only have 10 levels
+        if (level <= GameManager.gameManagerInstace.GetLevels().Length) //Only have 10 levels
         {
             GameManager.gameManagerInstace.GetLevels()[level]._lock = false;
         }
@@ -363,7 +363,7 @@ public class LevelManager : MonoBehaviour {
         {
             GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[1] = true;
         }
-        if (_points > gameField.GetTotalBlocks() * 30)
+        if (_points > gameField.GetTotalBlocks() * 40)
         {
             GameManager.gameManagerInstace.GetLevels()[level - 1]._stars[2] = true;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -24,7 +25,7 @@ public struct Level
 public class GameManager : MonoBehaviour
 {
     private TextAsset _currentMapLevel;
-    private Level[] _levels = new Level[10];
+    private Level[] _levels;
 
     //[SerializeField]
     private int _ruby;
@@ -43,6 +44,14 @@ public class GameManager : MonoBehaviour
             gameManagerInstace = this;
 
             DontDestroyOnLoad(gameObject);
+
+
+            string myPath = "Assets/Resources/Maps";
+            DirectoryInfo dir = new DirectoryInfo(myPath);
+            FileInfo[] info = dir.GetFiles("*.txt");
+
+            _levels = new Level[info.Length];
+
 
             _levels[0] = new Level(false, false, false, false);
             for (int i = 1; i < _levels.Length; i++)

@@ -4,76 +4,100 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
-
+using System.IO;
 
 public class SelectLevelManager : MonoBehaviour {
 
     //Ruby text
     public Text rubyText;
 
-    public Button ButtonPrefab;
+    public Button buttonPrefab;
 
-    //private static int _nLevels = 200;
+    private Button _buttonAux;
+
+    private int _nLevels;
     //Available maps
-    private TextAsset[] maps = new TextAsset[10];
+    private TextAsset[] maps;
     //Buttons
     private Button[] _buttons;
+
+    public Canvas canvasButtonsLevels;
+
+    public Image scrollView;
+
+    private const int MAX_SCROLL = 550;
+
+    private void Update()
+    {
+        Debug.Log(canvasButtonsLevels.transform.position);
+
+       if (canvasButtonsLevels.transform.position.y < MAX_SCROLL)
+           canvasButtonsLevels.transform.position = new Vector3(canvasButtonsLevels.transform.position.x, MAX_SCROLL, canvasButtonsLevels.transform.position.z);
+    }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        for(int i =0;i < 10; i++)
+       
+        string myPath = "Assets/Resources/Maps";
+        DirectoryInfo dir = new DirectoryInfo(myPath);
+        FileInfo[] info = dir.GetFiles("*.txt");
+
+        _nLevels = info.Length;
+
+        maps = new TextAsset[_nLevels];
+        _buttons = new Button[_nLevels];
+
+        for (int i = 0; i < _nLevels; i++)
         {
             maps[i] = Resources.Load("Maps/mapdata" + (i + 1).ToString()) as TextAsset;
         }
 
-        //Take only level buttons and sort them
-        Button[] allButtons = FindObjectsOfType<Button>();
-        _buttons = new Button[allButtons.Length - 2];
 
-        //_buttons = new Button[200];
-
-        int index;
-        for(int i = 0; i < allButtons.Length; i++)
+        int posX = 0;
+        int posY = 0;
+        for (int i = 0; i < _nLevels; i++)
         {
-            if (allButtons[i].name[0] == 'L')
+            if (posX == 0)
             {
-                string level = "";
-                for(int j = 5; j < allButtons[i].name.Length; j++)
-                {
-                    level += allButtons[i].name[j];
-                }
-                Int32.TryParse(level, out index);
-                index--;
-                _buttons[index] = allButtons[i];
+                _buttonAux = Instantiate(buttonPrefab, new Vector3(Screen.width / 2 - 100 + 50 * posX, Screen.height / 2  + 150 - 85 * posY, 0), new Quaternion(0, 0, 0, 0), canvasButtonsLevels.transform)/*.GetComponentInChildren<TextMesh>().text = i.ToString()*/;              
+                posX++;
             }
+            else if (posX == 1)
+            {
+                _buttonAux = Instantiate(buttonPrefab, new Vector3((Screen.width / 2) - 50 + 50 * posX, Screen.height / 2 + 150 - 85 * posY, 0), new Quaternion(0, 0, 0, 0), canvasButtonsLevels.transform)/*.GetComponentInChildren<TextMesh>().text = i.ToString()*/;
+              
+                posX++;
+            }
+            else if (posX == 2)
+            {
+                _buttonAux = Instantiate(buttonPrefab, new Vector3(Screen.width / 2 + 50 * posX, Screen.height / 2 + 150 - 85 * posY, 0), new Quaternion(0, 0, 0, 0), canvasButtonsLevels.transform)/*.GetComponentInChildren<TextMesh>().text = i.ToString()*/;              
+                posX = 0;
+                posY++;
+            }
+            _buttonAux.GetComponentInChildren<Text>().text = (i + 1).ToString();
+            _buttonAux.name = "Level" + (i + 1).ToString();
+
+            _buttons[i] = _buttonAux;
+
+           
         }
 
-       /* for (int i = 0; i < _buttons.Length; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                Button aux;
-                if (j == 0)
-                {
-                    aux = Instantiate(ButtonPrefab, new Vector3(0, 2 * (int)(i % 3), 0), new Quaternion(0, 0, 0, 0));
-                }
-                else if (j == 2)
-                {
-                    aux = Instantiate(ButtonPrefab, new Vector3(5, 2 * (int)(i % 3), 0), new Quaternion(0, 0, 0, 0));
-                }
-                else
-                {
-                    aux = Instantiate(ButtonPrefab, new Vector3(15, 2 * (int)(i % 3), 0), new Quaternion(0, 0, 0, 0));
-                }
-                _buttons[i] = aux;
-            }
-        }*/
+      
+
 
         //Set to each button its LoadLevel method with its map
         #region Listener Buttons
-        _buttons[0].onClick.AddListener(delegate { LoadLevel(maps[0], 0); });
+
+        for(int i = 0; i < _nLevels; i++)
+        {
+            int copy = i;
+            _buttons[i].onClick.AddListener(delegate { LoadLevel(maps[copy], copy); });
+        }
+
+
+        /*_buttons[0].onClick.AddListener(delegate { LoadLevel(maps[0], 0); });
         _buttons[1].onClick.AddListener(delegate { LoadLevel(maps[1], 1); });
         _buttons[2].onClick.AddListener(delegate { LoadLevel(maps[2], 2); });
         _buttons[3].onClick.AddListener(delegate { LoadLevel(maps[3], 3); });
@@ -82,8 +106,9 @@ public class SelectLevelManager : MonoBehaviour {
         _buttons[6].onClick.AddListener(delegate { LoadLevel(maps[6], 6); });
         _buttons[7].onClick.AddListener(delegate { LoadLevel(maps[7], 7); });
         _buttons[8].onClick.AddListener(delegate { LoadLevel(maps[8], 8); });
-        _buttons[9].onClick.AddListener(delegate { LoadLevel(maps[9], 9); });
+        _buttons[9].onClick.AddListener(delegate { LoadLevel(maps[9], 9); });*/
 #endregion   
+
         //Show each level´s stars and if the level is locked or not
         for (int i = 0; i < GameManager.gameManagerInstace.GetLevels().Length; i++)
         {
